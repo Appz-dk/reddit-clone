@@ -20,7 +20,7 @@ const fonts = {
 const styles = {
     global: () => ({
         body: {
-            bg: "gray.200"
+            bg: "gray.200",
         }
     })
 }
