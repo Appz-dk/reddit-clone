@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
 import AuthInput from "./AuthInput";
@@ -49,9 +49,27 @@ const Login = () => {
         </Text>
       )}
 
-      <Button variant="solid" w="100%" marginBlock={2} height="36px" type="submit">
+      <Button
+        isLoading={loading}
+        variant="solid"
+        w="100%"
+        marginBlock={2}
+        height="36px"
+        type="submit">
         Log In
       </Button>
+
+      <Flex fontSize=".75em" justifyContent="center" mt={2}>
+        <Text mr={1}>Forgot your password?</Text>
+        <Text
+          onClick={() => {
+            setAuthModalState((prev) => ({ ...prev, view: "resetPassword" }));
+          }}
+          color="blue.500"
+          cursor="pointer">
+          Reset
+        </Text>
+      </Flex>
 
       <AuthModalFooter
         textContent="New to Reddit?"

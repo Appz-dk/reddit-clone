@@ -6,13 +6,14 @@ import { FIREBASE_ERRORS } from "../../../firebase/errors";
 
 const OAuthButtons: React.FC = () => {
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
-  const handleLoginWithGoogle = () => {
-    signInWithGoogle();
-  };
 
   return (
     <Flex direction="column" mb={4} gap={2} w="full">
-      <Button variant="oauth" textAlign="center" isLoading={loading} onClick={() => handleLoginWithGoogle()}>
+      <Button
+        variant="oauth"
+        textAlign="center"
+        isLoading={loading}
+        onClick={() => signInWithGoogle()}>
         <Image src="/images/googlelogo.png" w={5} mr={4} />
         Continue with Google
       </Button>
