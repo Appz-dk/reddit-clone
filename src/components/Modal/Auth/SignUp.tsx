@@ -1,18 +1,41 @@
 import React, { useState } from "react";
-import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "../../../firebase/clientApp";
+import { FIREBASE_ERRORS } from "../../../firebase/errors";
+import AuthInput from "./AuthInput";
 
 const SignUp = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
+  const [error, setError] = useState("");
   const [signUpForm, setSignUpForm] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
 
-  // TODO: Add firebase login inside of submit function
-  const onSubmitHandler = () => {};
+  const [createUserWithEmailAndPassword, user, loading, userError] =
+    useCreateUserWithEmailAndPassword(auth);
+
+  const onSubmitHandler = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Reset any previous errors
+    if (error) setError("");
+    // Check for valid email
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(signUpForm.email)) {
+      setError("Invalid Email Address");
+      return;
+    }
+    // Check for matching passwords
+    if (signUpForm.password !== signUpForm.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    // Create the user using the hook
+    createUserWithEmailAndPassword(signUpForm.email, signUpForm.password);
+  };
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignUpForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -20,49 +43,41 @@ const SignUp = () => {
 
   return (
     <form onSubmit={onSubmitHandler}>
-      <Input
-        required
+      <AuthInput
+        required={true}
         placeholder="Email"
         name="email"
         type="email"
-        fontSize=".85rem"
-        mb={2}
-        bg="blue.50"
-        _placeholder={{ color: "gray.600" }}
-        _hover={{ border: "1px solid", borderColor: "blue.500", bg: "white" }}
-        _focus={{ border: "1px solid", borderColor: "blue.500", outline: "none" }}
         onChange={onChangeHandler}
       />
 
-      <Input
-        required
+      <AuthInput
+        required={true}
         placeholder="Password"
         name="password"
         type="password"
-        fontSize=".85rem"
-        mb={2}
-        bg="blue.50"
-        _placeholder={{ color: "gray.600" }}
-        _hover={{ border: "1px solid", borderColor: "blue.500", bg: "white" }}
-        _focus={{ border: "1px solid", borderColor: "blue.500", outline: "none" }}
         onChange={onChangeHandler}
       />
 
-      <Input
-        required
+      <AuthInput
+        required={true}
         placeholder="Confirm Password"
         name="confirmPassword"
         type="password"
-        fontSize=".85rem"
-        mb={2}
-        bg="blue.50"
-        _placeholder={{ color: "gray.600" }}
-        _hover={{ border: "1px solid", borderColor: "blue.500", bg: "white" }}
-        _focus={{ border: "1px solid", borderColor: "blue.500", outline: "none" }}
         onChange={onChangeHandler}
       />
 
-      <Button variant="solid" w="100%" marginBlock={2} height="36px" type="submit">
+      <Text textAlign="center" color="red.500" fontSize=".85em">
+        {error || (userError && FIREBASE_ERRORS[userError.message])}
+      </Text>
+
+      <Button
+        variant="solid"
+        w="100%"
+        marginBlock={2}
+        height="36px"
+        type="submit"
+        isLoading={loading}>
         Sign Up
       </Button>
 
@@ -75,8 +90,7 @@ const SignUp = () => {
           textTransform="uppercase"
           color="blue.500"
           fontWeight="700"
-          cursor="pointer"
-        >
+          cursor="pointer">
           Log In
         </Text>
       </Flex>
