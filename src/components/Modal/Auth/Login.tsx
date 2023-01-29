@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
 import AuthInput from "./AuthInput";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "../../../firebase/clientApp";
+import { FIREBASE_ERRORS } from "../../../firebase/errors";
+import AuthModalFooter from "./AuthModalFooter";
 
 const Login = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
@@ -10,9 +14,11 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
 
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
+    signInWithEmailAndPassword(loginForm.email, loginForm.password);
   };
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,23 +43,21 @@ const Login = () => {
         onChange={onChangeHandler}
       />
 
+      {error && (
+        <Text textAlign="center" color="red.500" fontSize=".85em">
+          {FIREBASE_ERRORS[error.message]}
+        </Text>
+      )}
+
       <Button variant="solid" w="100%" marginBlock={2} height="36px" type="submit">
         Log In
       </Button>
 
-      <Flex fontSize=".75em" justifyContent="center">
-        <Text mr={1}>New to Reddit?</Text>
-        <Text
-          onClick={() => {
-            setAuthModalState((prev) => ({ ...prev, view: "signup" }));
-          }}
-          textTransform="uppercase"
-          color="blue.500"
-          fontWeight="700"
-          cursor="pointer">
-          Sign Up
-        </Text>
-      </Flex>
+      <AuthModalFooter
+        textContent="New to Reddit?"
+        view="signup"
+        setAuthModalState={setAuthModalState}
+      />
     </form>
   );
 };

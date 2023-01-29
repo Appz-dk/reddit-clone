@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 import AuthInput from "./AuthInput";
+import AuthModalFooter from "./AuthModalFooter";
 
 const SignUp = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
@@ -81,19 +82,11 @@ const SignUp = () => {
         Sign Up
       </Button>
 
-      <Flex fontSize=".75em" justifyContent="center">
-        <Text mr={1}>Already a redditor?</Text>
-        <Text
-          onClick={() => {
-            setAuthModalState((prev) => ({ ...prev, view: "login" }));
-          }}
-          textTransform="uppercase"
-          color="blue.500"
-          fontWeight="700"
-          cursor="pointer">
-          Log In
-        </Text>
-      </Flex>
+      <AuthModalFooter
+        textContent="Already a redditor?"
+        view="login"
+        setAuthModalState={setAuthModalState}
+      />
     </form>
   );
 };
