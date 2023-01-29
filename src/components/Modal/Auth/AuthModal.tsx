@@ -4,31 +4,49 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
-  useDisclosure,
+  Flex,
+  Text,
+  Divider,
 } from "@chakra-ui/react";
+import { useRecoilState } from "recoil";
+import { authModalState } from "../../../atoms/authModalAtom";
+import { SearchIcon } from "@chakra-ui/icons";
+import AuthInputs from "./AuthInputs";
+import OAuthButtons from "./OAuthButtons";
 
 const AuthModal: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [modalState, setModalState] = useRecoilState(authModalState);
+
+  const handleCLose = () => {
+    setModalState((currVal) => ({ ...currVal, open: false }));
+  };
   return (
     <>
-      <Button onClick={onOpen}>Open Modal</Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={modalState.open} onClose={handleCLose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader textAlign="center">
+            {modalState.view === "login" && "Login"}
+            {modalState.view === "signup" && "Sign Up"}
+            {modalState.view === "resetPassword" && "Reset Password"}
+          </ModalHeader>
           <ModalCloseButton />
-          <ModalBody></ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Secondary Action</Button>
-          </ModalFooter>
+          <ModalBody display="flex" flexDir="column" alignItems="center" justifyContent="center" pb={6}>
+            <Flex width="70%" direction="column" gap={2} align="center" justify="center">
+              <OAuthButtons />
+              <Flex align="center" w="100%" gap="3">
+                <Text borderBottom="1px solid" borderColor="gray.400" width="100%" />
+                <Text color="gray.400" fontWeight="700">
+                  OR
+                </Text>
+                <Text borderBottom="1px solid" borderColor="gray.400" width="100%" />
+              </Flex>
+              <AuthInputs />
+              {/* <ResetPassword /> */}
+            </Flex>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>
