@@ -5,7 +5,7 @@ import { ChevronDownIcon, Icon } from "@chakra-ui/icons";
 import { VscAccount } from "react-icons/vsc";
 import { MdOutlineLogin } from "react-icons/md";
 import { useSetRecoilState } from "recoil";
-import { authModalState } from "../../atoms/authModalAtom";
+import { authModalState } from "../../../atoms/authModalAtom";
 
 const UserMenuLoggedOut: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);

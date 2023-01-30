@@ -1,7 +1,7 @@
 import { MenuList, MenuItem, Flex, MenuDivider, MenuButton, Text } from "@chakra-ui/react";
 import { ChevronDownIcon, Icon } from "@chakra-ui/icons";
 import { signOut, User } from "firebase/auth";
-import { auth } from "../../firebase/clientApp";
+import { auth } from "../../../firebase/clientApp";
 
 import { FaRedditSquare } from "react-icons/fa";
 import { IoSparkles } from "react-icons/io5";
