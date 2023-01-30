@@ -13,21 +13,21 @@ const Icons: React.FC = () => {
         borderRight="1px solid"
         borderColor="gray.200">
         <Flex _hover={{ bg: "gray.200" }} padding="1" borderRadius="4" cursor="pointer">
-          <Icon as={BsArrowUpRightCircle} fontSize="1.1em" />
+          <Icon as={BsArrowUpRightCircle} fontSize="1.1rem" />
         </Flex>
         <Flex _hover={{ bg: "gray.200" }} padding="1" borderRadius="4" cursor="pointer">
-          <Icon as={IoFilterCircleOutline} fontSize="1.3em" />
+          <Icon as={IoFilterCircleOutline} fontSize="1.3rem" />
         </Flex>
         <Flex _hover={{ bg: "gray.200" }} padding="1" borderRadius="4" cursor="pointer">
-          <Icon as={IoVideocamOutline} fontSize="1.4em" />
+          <Icon as={IoVideocamOutline} fontSize="1.4rem" />
         </Flex>
       </Flex>
       <Flex align="center" paddingInline={1}>
         <Flex _hover={{ bg: "gray.200" }} padding="1" borderRadius="4" cursor="pointer">
-          <Icon as={BsChatDots} fontSize="1.1em" />
+          <Icon as={BsChatDots} fontSize="1.1rem" />
         </Flex>
         <Flex _hover={{ bg: "gray.200" }} padding="1" borderRadius="4" cursor="pointer">
-          <Icon as={IoNotificationsOutline} fontSize="1.2em" />
+          <Icon as={IoNotificationsOutline} fontSize="1.2rem" />
         </Flex>
         <Flex
           display={{ base: "none", md: "flex" }}
@@ -35,7 +35,7 @@ const Icons: React.FC = () => {
           padding="1"
           borderRadius="4"
           cursor="pointer">
-          <Icon as={GrAdd} fontSize="1.2em" />
+          <Icon as={GrAdd} fontSize="1.2rem" />
         </Flex>
       </Flex>
     </Flex>

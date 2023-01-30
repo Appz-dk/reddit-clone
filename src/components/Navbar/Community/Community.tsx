@@ -3,6 +3,7 @@ import { Flex, Icon, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { MdOutlineLogin } from "react-icons/md";
 import { TiHome } from "react-icons/ti";
+import Communities from "./Communities";
 
 const Community: React.FC = () => {
   return (
@@ -28,7 +29,9 @@ const Community: React.FC = () => {
           <ChevronDownIcon />
         </Flex>
       </MenuButton>
-      <MenuList>{/* <Communities /> */}</MenuList>
+      <MenuList>
+        <Communities />
+      </MenuList>
     </Menu>
   );
 };

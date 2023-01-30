@@ -44,7 +44,7 @@ const Login = () => {
       />
 
       {error && (
-        <Text textAlign="center" color="red.500" fontSize=".85em">
+        <Text textAlign="center" color="red.500" fontSize=".85rem">
           {FIREBASE_ERRORS[error.message]}
         </Text>
       )}
@@ -59,7 +59,7 @@ const Login = () => {
         Log In
       </Button>
 
-      <Flex fontSize=".75em" justifyContent="center" mt={2}>
+      <Flex fontSize=".75rem" justifyContent="center" mt={2}>
         <Text mr={1}>Forgot your password?</Text>
         <Text
           onClick={() => {

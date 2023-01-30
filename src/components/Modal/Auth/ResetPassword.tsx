@@ -27,19 +27,19 @@ const ResetPassword = () => {
     <>
       <Icon as={BsReddit} color="brand.100" fontSize={40} mb="2" />
 
-      <Text mb={2} fontSize=".9em" fontWeight="700">
+      <Text mb={2} fontSize=".9rem" fontWeight="700">
         Reset your password
       </Text>
 
       {(!success || error) && (
-        <Text fontSize=".8em" textAlign="center">
+        <Text fontSize=".8rem" textAlign="center">
           Enter the email address associated with your Reddit account, and we’ll send you a reset
           link
         </Text>
       )}
 
       {success && !error && (
-        <Text fontSize=".8em" textAlign="center" mb={4}>
+        <Text fontSize=".8rem" textAlign="center" mb={4}>
           Check your email :)
         </Text>
       )}
@@ -58,7 +58,7 @@ const ResetPassword = () => {
             be able to see what emails exists in the system
          */}
         {error && (
-          <Text textAlign="center" fontSize=".85em" color="red.500">
+          <Text textAlign="center" fontSize=".85rem" color="red.500">
             {FIREBASE_ERRORS[error.message].replace("or password", "").trim()}
           </Text>
         )}
@@ -74,7 +74,7 @@ const ResetPassword = () => {
         </Button>
       </form>
 
-      <Flex color="blue.500" fontWeight="700" align="center" justify="center" fontSize=".7em">
+      <Flex color="blue.500" fontWeight="700" align="center" justify="center" fontSize=".7rem">
         <Text
           textTransform="uppercase"
           cursor="pointer"

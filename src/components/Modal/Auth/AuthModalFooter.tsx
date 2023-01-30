@@ -16,7 +16,7 @@ const AuthModalFooter: React.FC<AuthModalFooterProps> = ({
   const btnText = view === "signup" ? "Sign Up" : "Log In";
 
   return (
-    <Flex fontSize=".75em" justifyContent="center" mt={2}>
+    <Flex fontSize=".75rem" justifyContent="center" mt={2}>
       <Text mr={1}>{textContent}</Text>
       <Text
         onClick={() => {

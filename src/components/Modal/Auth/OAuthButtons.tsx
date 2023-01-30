@@ -20,7 +20,7 @@ const OAuthButtons: React.FC = () => {
       {/* Incase of more auth providers simply add 1 more button */}
       {/* <Button variant="oauth">Some Other Provider</Button> */}
       {error && (
-        <Text textAlign="center" color="red.500" fontSize=".85em">
+        <Text textAlign="center" color="red.500" fontSize=".85rem">
           {FIREBASE_ERRORS[error.message]}
         </Text>
       )}

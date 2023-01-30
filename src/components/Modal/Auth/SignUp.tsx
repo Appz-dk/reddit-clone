@@ -68,7 +68,7 @@ const SignUp = () => {
         onChange={onChangeHandler}
       />
 
-      <Text textAlign="center" color="red.500" fontSize=".85em">
+      <Text textAlign="center" color="red.500" fontSize=".85rem">
         {error || (userError && FIREBASE_ERRORS[userError.message])}
       </Text>
 
