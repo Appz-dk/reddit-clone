@@ -1,9 +1,14 @@
-import { Flex, Icon, MenuItem } from "@chakra-ui/react";
+import { Flex, Icon, MenuItem, Text } from "@chakra-ui/react";
+import { User } from "firebase/auth";
 import React, { useState } from "react";
 import { GrAdd } from "react-icons/gr";
-import CreateCommunityModal from "../../Modal/CreateCommunity";
+import CreateCommunityModal from "../../Modal/CreateCommunity/CreateCommunityModal";
 
-const Communities = () => {
+type CommunitiesProps = {
+  user?: User | null;
+};
+
+const Communities: React.FC<CommunitiesProps> = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClose = () => {
@@ -12,11 +17,11 @@ const Communities = () => {
 
   return (
     <>
-      <CreateCommunityModal onClose={handleClose} isOpen={isOpen} />
+      <CreateCommunityModal onClose={handleClose} isOpen={isOpen} user={user} />
       <MenuItem fontSize=".75rem" onClick={() => setIsOpen(true)}>
         <Flex align="center" gap="1">
           <Icon as={GrAdd} fontSize="1.1rem" />
-          Create Community
+          <Text fontWeight="600">Create Community</Text>
         </Flex>
       </MenuItem>
     </>

@@ -16,15 +16,21 @@ import {
 import ModalWrapper from "../ModalWrapper";
 import { FaLock, FaUserAlt } from "react-icons/fa";
 import { BsFillEyeFill } from "react-icons/bs";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import { firestore } from "../../../firebase/clientApp";
+import { User } from "firebase/auth";
 
 type CreateCommunityModalType = {
   isOpen: boolean;
   onClose: () => void;
+  user?: User | null;
 };
 
-const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onClose }) => {
+const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onClose, user }) => {
   const [communityName, setCommunityName] = useState("");
   const [communityType, setCommunityType] = useState("public");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const onCommunityNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 21) return;
@@ -35,9 +41,51 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
     setCommunityType(e.target.name);
   };
 
+  const handleCreateCommunity = async () => {
+    if (error) setError("");
+
+    // Tripple check a user is logged in
+    if (!user) {
+      setError("You need to be logged in to create a community");
+      return;
+    }
+
+    // Validate community name (3-21 chars, numbers, letters and '_' allowed)
+    if (!/^[\d\w]{3,21}$/.test(communityName)) {
+      setError(
+        "Community name can only include letters, numbers, underscores and between 3-21 characters"
+      );
+      return;
+    }
+
+    try {
+      setLoading(true);
+      // Check if community already exists in database
+      const communityDocRef = doc(firestore, "communities", communityName); // doc(firebaseInstance, collectionName, idOfDocumentToLookFor)
+      const communityDoc = await getDoc(communityDocRef);
+
+      if (communityDoc.exists()) {
+        throw new Error(`Sorry, r/${communityName} is already taken. Please try another one.`);
+      }
+      // Add doc in firebase db with community name & type
+      await setDoc(communityDocRef, {
+        createrId: user.uid,
+        createdAt: serverTimestamp(),
+        numberOfMembers: 1,
+        privacyType: communityType,
+      });
+    } catch (error: unknown) {
+      console.log("handleCreateCommunity error", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+    }
+    setLoading(false);
+  };
+
   return (
     <ModalWrapper onClose={onClose} isOpen={isOpen} size="lg">
-      <ModalHeader fontSize=".9rem" padding={3}>
+      <ModalHeader fontSize=".9rem" fontWeight="700" padding={3}>
         Create a community
       </ModalHeader>
       <ModalCloseButton />
@@ -51,7 +99,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
         paddingInline="3">
         <Flex width="full" direction="column" gap={5}>
           <Box>
-            <Text fontSize=".85rem" fontWeight="700">
+            <Text fontSize=".85rem" fontWeight="600">
               Name
             </Text>
             <Text fontSize=".65rem" color="gray.500">
@@ -84,9 +132,13 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
             <Text fontSize=".65rem" color={communityName.length === 21 ? "red.500" : "gray.500"}>
               {21 - communityName.length} Characters remaining
             </Text>
+            {/* TODO: Maybe find a better UI solution. Maybe replace the above text on errors */}
+            <Text fontSize=".75rem" color="red.500">
+              {error}
+            </Text>
           </Box>
           <Box>
-            <Text fontSize=".85rem" fontWeight="700" mb={1}>
+            <Text fontSize=".85rem" fontWeight="600" mb={1}>
               Community Type
             </Text>
             <Flex gap="2" align="center" paddingBlock={1}>
@@ -133,7 +185,11 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
           <Button variant="outline" size="sm" fontSize=".7rem" onClick={onClose}>
             Cancel
           </Button>
-          <Button size="sm" fontSize=".7rem" onClick={() => {}}>
+          <Button
+            size="sm"
+            fontSize=".7rem"
+            isLoading={loading && !error}
+            onClick={() => handleCreateCommunity()}>
             Create Community
           </Button>
         </Flex>

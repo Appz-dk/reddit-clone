@@ -1,11 +1,14 @@
 import React from "react";
-import { Flex, Icon, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
+import { Flex, Icon, Menu, MenuButton, MenuList, Text } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { MdOutlineLogin } from "react-icons/md";
 import { TiHome } from "react-icons/ti";
 import Communities from "./Communities";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../../firebase/clientApp";
 
 const Community: React.FC = () => {
+  const [user, loading, error] = useAuthState(auth);
+
   return (
     <Menu>
       <MenuButton
@@ -21,7 +24,7 @@ const Community: React.FC = () => {
           maxWidth="200px">
           <Flex>
             <Icon as={TiHome} fontSize="1.2rem" mr={1} />
-            <Text fontWeight="700" fontSize=".8rem" display={{ base: "none", lg: "unset" }}>
+            <Text fontWeight="600" fontSize=".8rem" display={{ base: "none", lg: "unset" }}>
               {/* To prevent the community name being too long */}
               {"Home".length > 17 ? "Home".substring(0, 17) + "..." : "Home"}
             </Text>
@@ -30,7 +33,7 @@ const Community: React.FC = () => {
         </Flex>
       </MenuButton>
       <MenuList>
-        <Communities />
+        <Communities user={user} />
       </MenuList>
     </Menu>
   );
