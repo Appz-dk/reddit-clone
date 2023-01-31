@@ -33,3 +33,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# Folder to see how paid as you go firebase functions would work
+/functions
