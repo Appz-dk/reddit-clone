@@ -16,7 +16,7 @@ import {
 import ModalWrapper from "../ModalWrapper";
 import { FaLock, FaUserAlt } from "react-icons/fa";
 import { BsFillEyeFill } from "react-icons/bs";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, getDoc, runTransaction, serverTimestamp, setDoc } from "firebase/firestore";
 import { firestore } from "../../../firebase/clientApp";
 import { User } from "firebase/auth";
 
@@ -58,21 +58,31 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
       return;
     }
 
+    // TODO: Make into custom hook
     try {
       setLoading(true);
       // Check if community already exists in database
-      const communityDocRef = doc(firestore, "communities", communityName); // doc(firebaseInstance, collectionName, idOfDocumentToLookFor)
-      const communityDoc = await getDoc(communityDocRef);
+      const communityDocRef = doc(firestore, "communities", communityName);
 
-      if (communityDoc.exists()) {
-        throw new Error(`Sorry, r/${communityName} is already taken. Please try another one.`);
-      }
-      // Add doc in firebase db with community name & type
-      await setDoc(communityDocRef, {
-        createrId: user.uid,
-        createdAt: serverTimestamp(),
-        numberOfMembers: 1,
-        privacyType: communityType,
+      // A Transaction tries to run document updates at once, and if 1 fail all fail
+      await runTransaction(firestore, async (transaction) => {
+        const communityDoc = await transaction.get(communityDocRef);
+        if (communityDoc.exists()) {
+          throw new Error(`Sorry, r/${communityName} is already taken. Please try another one.`);
+        }
+        // Add doc in firestore db
+        transaction.set(communityDocRef, {
+          createrId: user.uid,
+          createdAt: serverTimestamp(),
+          numberOfMembers: 1,
+          privacyType: communityType,
+        });
+
+        // Add community to user's communitySnippet
+        transaction.set(doc(firestore, `users/${user.uid}/communitySnippets`, communityName), {
+          communityId: communityName,
+          isModerater: true,
+        });
       });
     } catch (error: unknown) {
       console.log("handleCreateCommunity error", error);
