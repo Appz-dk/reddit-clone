@@ -4,6 +4,8 @@ import React from "react";
 import { Community } from "../../../atoms/communitiesAtom";
 import { firestore } from "../../../firebase/clientApp";
 import safeJsonStringify from "safe-json-stringify";
+import NotFound from "../../../components/Communities/NotFound";
+import CommunityError from "../../../components/Communities/CommunityError";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -11,8 +13,9 @@ type CommunityPageProps = {
 };
 
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData, error }) => {
-  if (error) return <div>{error}</div>;
-  if (!communityData) return <div>Does not exists</div>;
+  if (error) return <CommunityError errorMessage={error} />;
+  if (!communityData) return <NotFound />;
+
   return <div>Welcome to {communityData?.id}</div>;
 };
 
