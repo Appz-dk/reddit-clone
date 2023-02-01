@@ -16,14 +16,10 @@ import {
 import ModalWrapper from "../ModalWrapper";
 import { FaLock, FaUserAlt } from "react-icons/fa";
 import { BsFillEyeFill } from "react-icons/bs";
-// import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
-// import { firestore } from "../../../firebase/clientApp";
 import { User } from "firebase/auth";
 
-import useCreateCommunity, {
-  CommunityType,
-  isCommunityType,
-} from "../../../hooks/useCreateCommunity";
+import useCreateCommunity from "../../../hooks/useCreateCommunity";
+import { CommunityType, isCommunityType } from "../../../atoms/communitiesAtom";
 
 type CreateCommunityModalType = {
   isOpen: boolean;
@@ -34,8 +30,6 @@ type CreateCommunityModalType = {
 const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onClose, user }) => {
   const [communityName, setCommunityName] = useState("");
   const [communityType, setCommunityType] = useState<CommunityType>("public");
-  // const [error, setError] = useState("");
-  // const [loading, setLoading] = useState(false);
 
   const { createCommunity, error, loading } = useCreateCommunity(user);
 
@@ -53,51 +47,6 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
 
   const handleCreateCommunity = async () => {
     createCommunity({ communityName, communityType });
-
-    // if (error) setError("");
-    // // Tripple check a user is logged in
-    // if (!user) {
-    //   setError("You need to be logged in to create a community");
-    //   return;
-    // }
-    // // Validate community name (3-21 chars, numbers, letters and '_' allowed)
-    // if (!/^[\d\w]{3,21}$/.test(communityName)) {
-    //   setError(
-    //     "Community name can only include letters, numbers, underscores and between 3-21 characters"
-    //   );
-    //   return;
-    // }
-    // // TODO: Make into custom hook
-    // try {
-    //   setLoading(true);
-    //   // Check if community already exists in database
-    //   const communityDocRef = doc(firestore, "communities", communityName);
-    //   // A Transaction tries to run document updates at once, and if 1 fail all fail
-    //   await runTransaction(firestore, async (transaction) => {
-    //     const communityDoc = await transaction.get(communityDocRef);
-    //     if (communityDoc.exists()) {
-    //       throw new Error(`Sorry, r/${communityName} is already taken. Please try another one.`);
-    //     }
-    //     // Add doc in firestore db
-    //     transaction.set(communityDocRef, {
-    //       createrId: user.uid,
-    //       createdAt: serverTimestamp(),
-    //       numberOfMembers: 1,
-    //       privacyType: communityType,
-    //     });
-    //     // Add community to user's communitySnippet
-    //     transaction.set(doc(firestore, `users/${user.uid}/communitySnippets`, communityName), {
-    //       communityId: communityName,
-    //       isModerater: true,
-    //     });
-    //   });
-    // } catch (error: unknown) {
-    //   console.log("handleCreateCommunity error", error);
-    //   if (error instanceof Error) {
-    //     setError(error.message);
-    //   }
-    // }
-    // setLoading(false);
   };
 
   return (

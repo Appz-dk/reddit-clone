@@ -2,12 +2,8 @@ import { useState } from "react"
 import { User } from "firebase/auth"
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
+import { CommunityType } from "../atoms/communitiesAtom";
 
-export type CommunityType = "public" | "restricted" | "private";
-
-export const isCommunityType = (value: string): value is CommunityType => {
-  return ["public", "restricted", "private"].includes(value)
-}
 
 type CreateCommunity = {
   communityName: string;
@@ -55,7 +51,7 @@ const useCreateCommunity = (user?: User | null): useCreateCommunityHook => {
         }
         // Add doc in firestore db
         transaction.set(communityDocRef, {
-          createrId: user.uid,
+          creatorId: user.uid,
           createdAt: serverTimestamp(),
           numberOfMembers: 1,
           privacyType: communityData.communityType,

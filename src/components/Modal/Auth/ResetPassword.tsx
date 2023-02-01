@@ -53,7 +53,7 @@ const ResetPassword = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        {/* TODO: Change errors.ts or find better solution than below.
+        {/* TODO: Change error msgs in errors.ts or find better solution than below.
             Maybe not showing the error at all is better, since the user will
             be able to see what emails exists in the system
          */}
