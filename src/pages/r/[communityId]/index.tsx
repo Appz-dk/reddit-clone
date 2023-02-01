@@ -6,6 +6,8 @@ import { firestore } from "../../../firebase/clientApp";
 import safeJsonStringify from "safe-json-stringify";
 import NotFound from "../../../components/Communities/NotFound";
 import CommunityError from "../../../components/Communities/CommunityError";
+import Header from "../../../components/Communities/Header";
+import PageContent from "../../../components/Layout/PageContent";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -16,7 +18,24 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData, error }) =
   if (error) return <CommunityError errorMessage={error} />;
   if (!communityData) return <NotFound />;
 
-  return <div>Welcome to {communityData?.id}</div>;
+  return (
+    <>
+      <Header communityName={communityData.id} />
+      <PageContent>
+        <>
+          <div>Right Side</div>
+          <div>Right Side</div>
+          <div>Right Side</div>
+          <div>Right Side</div>
+        </>
+        <>
+          <div>Left Side</div>
+          <div>Left Side</div>
+          <div>Left Side</div>
+        </>
+      </PageContent>
+    </>
+  );
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
