@@ -18,7 +18,7 @@ import { FaLock, FaUserAlt } from "react-icons/fa";
 import { BsFillEyeFill } from "react-icons/bs";
 import { User } from "firebase/auth";
 
-import useCreateCommunity from "../../../hooks/useCreateCommunity";
+import { useCreateCommunity } from "../../../hooks/useCreateCommunity";
 import { CommunityType, isCommunityType } from "../../../atoms/communitiesAtom";
 
 type CreateCommunityModalType = {
@@ -62,7 +62,8 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
         alignItems="center"
         justifyContent="center"
         pb={6}
-        paddingInline="3">
+        paddingInline="3"
+      >
         <Flex width="full" direction="column" gap={5}>
           <Box>
             <Text fontSize=".85rem" fontWeight="600">
@@ -79,7 +80,8 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
               fontSize=".85rem"
               w="fit-content"
               color="gray.400"
-              zIndex={99}>
+              zIndex={99}
+            >
               r/
             </Text>
             <Input
@@ -93,7 +95,8 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
               _hover={{ border: "1px solid", borderColor: "blue.500", bg: "white" }}
               _focus={{ border: "1px solid", borderColor: "blue.500", outline: "none" }}
               value={communityName}
-              onChange={onCommunityNameChange}></Input>
+              onChange={onCommunityNameChange}
+            ></Input>
 
             <Text fontSize=".65rem" color={communityName.length === 21 ? "red.500" : "gray.500"}>
               {21 - communityName.length} Characters remaining
@@ -155,7 +158,8 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
             size="sm"
             fontSize=".7rem"
             isLoading={loading && !error}
-            onClick={() => handleCreateCommunity()}>
+            onClick={() => handleCreateCommunity()}
+          >
             Create Community
           </Button>
         </Flex>

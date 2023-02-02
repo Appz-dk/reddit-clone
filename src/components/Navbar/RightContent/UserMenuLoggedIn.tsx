@@ -7,12 +7,21 @@ import { FaRedditSquare } from "react-icons/fa";
 import { IoSparkles } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineLogin } from "react-icons/md";
+import { useResetRecoilState } from "recoil";
+import { communityState } from "../../../atoms/communitiesAtom";
 
 type UserMenuLoggedInProps = {
   user: User | null | undefined;
 };
 
 const UserMenuLoggedIn: React.FC<UserMenuLoggedInProps> = ({ user }) => {
+  const resetCommunityState = useResetRecoilState(communityState);
+
+  const onLogout = async () => {
+    await signOut(auth);
+    resetCommunityState();
+  };
+
   return (
     <>
       <MenuButton
@@ -20,7 +29,8 @@ const UserMenuLoggedIn: React.FC<UserMenuLoggedInProps> = ({ user }) => {
         padding="0 6px"
         cursor="pointer"
         borderRadius={4}
-        _hover={{ outline: "1px soild", outlineColor: "gray.200" }}>
+        _hover={{ outline: "1px soild", outlineColor: "gray.200" }}
+      >
         <Flex align="center">
           <Icon as={FaRedditSquare} fontSize="1.5rem" color="gray.300" />
 
@@ -30,7 +40,8 @@ const UserMenuLoggedIn: React.FC<UserMenuLoggedInProps> = ({ user }) => {
             align="start"
             ml={1}
             mr={6}
-            display={{ base: "none", lg: "flex" }}>
+            display={{ base: "none", lg: "flex" }}
+          >
             <Text fontWeight="700">{user?.displayName || user?.email?.split("@")[0]}</Text>
             <Flex>
               <Icon as={IoSparkles} color="brand.100" mr={1} />
@@ -46,7 +57,8 @@ const UserMenuLoggedIn: React.FC<UserMenuLoggedInProps> = ({ user }) => {
           fontWeight="700"
           fontSize=".75rem"
           borderRadius={4}
-          _hover={{ bg: "blue.400", color: "white" }}>
+          _hover={{ bg: "blue.400", color: "white" }}
+        >
           <Icon as={CgProfile} fontSize="1.2rem" mr={2} />
           Profile
         </MenuItem>
@@ -58,7 +70,8 @@ const UserMenuLoggedIn: React.FC<UserMenuLoggedInProps> = ({ user }) => {
           fontSize=".75rem"
           borderRadius={4}
           _hover={{ bg: "blue.400", color: "white" }}
-          onClick={() => signOut(auth)}>
+          onClick={onLogout}
+        >
           <Icon as={MdOutlineLogin} fontSize="1.2rem" mr={2} />
           Log Out
         </MenuItem>

@@ -18,3 +18,24 @@ export interface Community {
   createdAt?: Timestamp;
   imageURL?: string;
 }
+
+export type CommunitySnippet = {
+  communityId: string;
+  isModerator?: boolean;
+  imageURL?: string;
+}
+
+interface CommunityState {
+  mySnippets: CommunitySnippet[]
+  // visitedCommunities
+}
+
+// The recoil atom
+const defaultCommunityState: CommunityState = {
+  mySnippets: []
+}
+
+export const communityState = atom<CommunityState>({
+  key: "communitiesState",
+  default: defaultCommunityState,
+})

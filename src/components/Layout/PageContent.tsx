@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { Flex } from "@chakra-ui/react";
 
 type PageContentProps = {
@@ -6,8 +6,6 @@ type PageContentProps = {
 };
 
 const PageContent: React.FC<PageContentProps> = ({ children }) => {
-  console.log(children);
-
   return (
     // TODO: Change maxWidth to % for better support at very big screens ??
     <Flex maxWidth="860px" justify="center" mx="auto" mt="6" paddingInline={4} gap="6">

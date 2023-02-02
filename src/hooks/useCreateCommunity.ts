@@ -17,7 +17,7 @@ type useCreateCommunityHook = {
 }
 
 
-const useCreateCommunity = (user?: User | null): useCreateCommunityHook => {
+export const useCreateCommunity = (user?: User | null): useCreateCommunityHook => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -75,4 +75,4 @@ const useCreateCommunity = (user?: User | null): useCreateCommunityHook => {
   return { createCommunity, loading, error }
 }
 
-export default useCreateCommunity
+// export default useCreateCommunity
