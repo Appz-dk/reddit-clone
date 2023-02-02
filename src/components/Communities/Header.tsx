@@ -14,8 +14,6 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
       (snippet) => snippet.communityId === communityData.id
     ) !== -1;
 
-  console.log(communityData.id);
-  console.log("State", communityStateValue);
   return (
     <Flex direction="column" height="18vh" width="full">
       <Box bg="blue.400" height="50%"></Box>

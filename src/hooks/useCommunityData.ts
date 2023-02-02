@@ -25,7 +25,6 @@ export const useCommunityData = () => {
       const communitySnippets = communitySnippetsDocs.docs.map(doc => doc.data())
 
       setCommunityStateValue({ mySnippets: communitySnippets as CommunitySnippet[] })
-      console.log("My snippets", communitySnippets)
 
     } catch (error: unknown) {
       console.log("getCommunitySnippets error", error)

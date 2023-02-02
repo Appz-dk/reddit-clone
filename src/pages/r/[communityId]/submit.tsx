@@ -1,7 +1,19 @@
+import { Text } from "@chakra-ui/react";
 import React from "react";
+import PageContent from "../../../components/Layout/PageContent";
 
-const SubmitPage = () => {
-  return <div>SubmitPage</div>;
+const SubmitPostPage = () => {
+  return (
+    <PageContent>
+      <>
+        <Text paddingBlock="3" borderBottom="2px solid white">
+          Create a Post
+        </Text>
+        {/* NewPostForm */}
+      </>
+      <>{/* About */}</>
+    </PageContent>
+  );
 };
 
-export default SubmitPage;
+export default SubmitPostPage;
