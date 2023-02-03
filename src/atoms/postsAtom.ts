@@ -2,7 +2,7 @@ import { atom } from "recoil"
 import { Timestamp } from "firebase/firestore";
 
 export interface Post {
-  id: string,
+  id?: string,
   title: string,
   body: string,
   imageURL?: string,
