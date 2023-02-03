@@ -1,5 +1,5 @@
-import { Timestamp } from "firebase/firestore";
 import { atom } from "recoil"
+import { Timestamp } from "firebase/firestore";
 
 // "if you need to define an object structure, use an interface. 
 // If you need to create more complex or specific type definitions, use a type."

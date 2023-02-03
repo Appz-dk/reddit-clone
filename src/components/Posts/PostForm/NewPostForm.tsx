@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Input, Text, Textarea } from "@chakra-ui/react";
+import { Flex, Icon, Stack, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { IoDocumentText } from "react-icons/io5";
 import { AiOutlinePicture } from "react-icons/ai";
@@ -6,6 +6,7 @@ import { BsLink45Deg, BsMic } from "react-icons/bs";
 import { BiPoll } from "react-icons/bi";
 import TabItem from "./TabItem";
 import PostTab from "./PostTab";
+import ImageTab from "./ImageTab";
 
 const formTabs: TabItemType[] = [
   {
@@ -36,7 +37,7 @@ export type TabItemType = {
 };
 
 const NewPostForm = () => {
-  const [isSelected, setIsSelected] = useState(formTabs[0].title);
+  const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
   const [selectedImageFile, setSelectedImageFile] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -49,6 +50,16 @@ const NewPostForm = () => {
     try {
       if (error) setError("");
       setLoading(true);
+
+      // Create new post object => type Post
+
+      // store post in database
+
+      // check for selctedFile
+      // store image in firebase storage => getDownloadURL (returns imageURL)
+      // Update post document by adding imageURL
+
+      // redirect the user back to the communityPage using router
     } catch (error: unknown) {
       console.log("handleCreatePost error", error);
       if (error instanceof Error) {
@@ -56,7 +67,22 @@ const NewPostForm = () => {
       }
     }
   };
-  const onSelectImage = () => {};
+
+  const onSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Only allow excatly 1 file to be uploaded
+    if (!e.target.files || e.target.files.length > 1) return;
+
+    // Using the FileReader
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = (readerEvent) => {
+      // Makes sure it's not null && an array of files
+      if (readerEvent.target?.result && !(readerEvent.target?.result instanceof ArrayBuffer)) {
+        setSelectedImageFile(readerEvent.target.result);
+      }
+    };
+  };
+
   const onPostTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setPostTextContent((prev) => ({
@@ -71,13 +97,13 @@ const NewPostForm = () => {
           <TabItem
             key={tab.title}
             item={tab}
-            isSelected={tab.title === isSelected}
-            onSetSelectedTab={setIsSelected}
+            isSelected={tab.title === selectedTab}
+            onSetSelectedTab={setSelectedTab}
           />
         ))}
       </Flex>
       <Flex p="4">
-        {isSelected === formTabs[0].title && (
+        {selectedTab === formTabs[0].title && (
           <PostTab
             textState={postTextContent}
             onPostTextChange={onPostTextChange}
@@ -85,6 +111,19 @@ const NewPostForm = () => {
             handleCreatePost={handleCreatePost}
             loading={loading}
           />
+        )}
+        {selectedTab === formTabs[1].title && (
+          <ImageTab
+            onSelectImage={onSelectImage}
+            selectedFile={selectedImageFile}
+            setSelectedImageFile={setSelectedImageFile}
+            setSelectedTab={setSelectedTab}
+          />
+        )}
+        {selectedTab !== formTabs[0].title && selectedTab !== formTabs[1].title && (
+          <Stack align="center" w="full">
+            <Text>Sorry this feature is not implemented yet...</Text>
+          </Stack>
         )}
       </Flex>
     </Flex>
