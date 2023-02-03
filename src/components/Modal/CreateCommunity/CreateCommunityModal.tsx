@@ -91,6 +91,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
               bg="gray.50"
               pl={22}
               mb={1}
+              borderRadius="4"
               _placeholder={{ color: "gray.500" }}
               _hover={{ border: "1px solid", borderColor: "blue.500", bg: "white" }}
               _focus={{ border: "1px solid", borderColor: "blue.500", outline: "none" }}

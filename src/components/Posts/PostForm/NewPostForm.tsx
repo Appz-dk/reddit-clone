@@ -5,6 +5,7 @@ import { AiOutlinePicture } from "react-icons/ai";
 import { BsLink45Deg, BsMic } from "react-icons/bs";
 import { BiPoll } from "react-icons/bi";
 import TabItem from "./TabItem";
+import PostTab from "./PostTab";
 
 const formTabs: TabItemType[] = [
   {
@@ -36,17 +37,31 @@ export type TabItemType = {
 
 const NewPostForm = () => {
   const [isSelected, setIsSelected] = useState(formTabs[0].title);
-  const [postText, setPostText] = useState({
+  const [selectedImageFile, setSelectedImageFile] = useState<string>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [postTextContent, setPostTextContent] = useState({
     postTitle: "",
     postText: "",
   });
 
-  const handleCreatePost = async () => {};
+  const handleCreatePost = async () => {
+    try {
+      if (error) setError("");
+      setLoading(true);
+    } catch (error: unknown) {
+      console.log("handleCreatePost error", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+    }
+  };
   const onSelectImage = () => {};
   const onPostTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setPostText((prev) => ({
+    const { name, value } = e.target;
+    setPostTextContent((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
   return (
@@ -61,29 +76,17 @@ const NewPostForm = () => {
           />
         ))}
       </Flex>
-      {isSelected === formTabs[0].title && (
-        <Flex direction="column" p="4" gap="3">
-          <Input
-            name="postTitle"
-            placeholder="Title"
-            fontSize=".8rem"
-            onChange={onPostTextChange}
+      <Flex p="4">
+        {isSelected === formTabs[0].title && (
+          <PostTab
+            textState={postTextContent}
+            onPostTextChange={onPostTextChange}
+            isDisabled={!postTextContent.postTitle}
+            handleCreatePost={handleCreatePost}
+            loading={loading}
           />
-          <Textarea
-            name="postText"
-            placeholder="Text (optional)"
-            fontSize=".8rem"
-            onChange={onPostTextChange}
-          />
-          <Flex justify="end">
-            {/* TODO: Change other "sm" buttons to size "xs" ? */}
-            {/* And maybe require a min length for post title */}
-            <Button size="xs" paddingInline="5" isDisabled={!postText.postTitle}>
-              Post
-            </Button>
-          </Flex>
-        </Flex>
-      )}
+        )}
+      </Flex>
     </Flex>
   );
 };
