@@ -11,6 +11,7 @@ import PageContent from "../../../components/Layout/PageContent";
 import CreatePostLink from "../../../components/Communities/CreatePostLink";
 import Posts from "../../../components/Posts/Posts/Posts";
 import { useSetRecoilState } from "recoil";
+import About from "../../../components/Communities/About";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -28,7 +29,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData, error }) =
       ...prev,
       currentCommunity: communityData,
     }));
-  }, []);
+  }, [communityData]);
 
   return (
     <>
@@ -39,7 +40,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData, error }) =
           <Posts communityData={communityData} />
         </>
         <>
-          <div>Left Side</div>
+          <About communityData={communityData} />
         </>
       </PageContent>
     </>
@@ -56,7 +57,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     // getting the document
     const communityDoc = await getDoc(communityDocRef);
 
-    // Check if document exists & return props with the document data or ""
+    // Check if document exists & return props with the document data or null
     if (communityDoc.exists()) {
       return {
         props: {

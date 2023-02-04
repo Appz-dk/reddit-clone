@@ -3,6 +3,7 @@ import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilValue } from "recoil";
 import { communityState } from "../../../atoms/communitiesAtom";
+import About from "../../../components/Communities/About";
 import PageContent from "../../../components/Layout/PageContent";
 import NewPostForm from "../../../components/Posts/PostForm/NewPostForm";
 import { auth } from "../../../firebase/clientApp";
@@ -20,8 +21,9 @@ const SubmitPostPage = () => {
         {user && <NewPostForm user={user} />}
       </>
       <>
-        {/* About */}
-        <div>Hello</div>
+        {communityStateValue.currentCommunity && (
+          <About communityData={communityStateValue.currentCommunity} />
+        )}
       </>
     </PageContent>
   );
