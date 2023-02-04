@@ -9,14 +9,7 @@ import PostTab from "./PostTab";
 import ImageTab from "./ImageTab";
 import { Post } from "../../../atoms/postsAtom";
 import { User } from "firebase/auth";
-import {
-  addDoc,
-  collection,
-  serverTimestamp,
-  setDoc,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection, serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { firestore, storage } from "../../../firebase/clientApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";

@@ -1,7 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";
-import React from "react";
-import { Community } from "../../../atoms/communitiesAtom";
+import React, { useEffect } from "react";
+import { Community, communityState } from "../../../atoms/communitiesAtom";
 import { firestore } from "../../../firebase/clientApp";
 import safeJsonStringify from "safe-json-stringify";
 import NotFound from "../../../components/Communities/NotFound";
@@ -10,6 +10,7 @@ import Header from "../../../components/Communities/Header";
 import PageContent from "../../../components/Layout/PageContent";
 import CreatePostLink from "../../../components/Communities/CreatePostLink";
 import Posts from "../../../components/Posts/Posts/Posts";
+import { useSetRecoilState } from "recoil";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -17,8 +18,17 @@ type CommunityPageProps = {
 };
 
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData, error }) => {
+  const setCommunityStateValue = useSetRecoilState(communityState);
+
   if (error) return <CommunityError errorMessage={error} />;
   if (!communityData) return <NotFound />;
+
+  useEffect(() => {
+    setCommunityStateValue((prev) => ({
+      ...prev,
+      currentCommunity: communityData,
+    }));
+  }, []);
 
   return (
     <>
@@ -29,8 +39,6 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData, error }) =
           <Posts communityData={communityData} />
         </>
         <>
-          <div>Left Side</div>
-          <div>Left Side</div>
           <div>Left Side</div>
         </>
       </PageContent>
@@ -65,7 +73,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
   } catch (error: unknown) {
     // Could add an error page here, to show incase of an error
-    // console.log("getServerSideProps error in [communityId]", error);
     if (error instanceof Error) {
       return {
         props: {

@@ -27,7 +27,7 @@ export type CommunitySnippet = {
 
 interface CommunityState {
   mySnippets: CommunitySnippet[]
-  // visitedCommunities
+  currentCommunity?: Community;
 }
 
 // The recoil atom
