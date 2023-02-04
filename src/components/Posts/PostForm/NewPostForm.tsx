@@ -13,6 +13,7 @@ import { addDoc, collection, serverTimestamp, Timestamp, updateDoc } from "fireb
 import { useRouter } from "next/router";
 import { firestore, storage } from "../../../firebase/clientApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import useSelectImage from "../../../hooks/useSelectFile";
 
 const formTabs: TabItemType[] = [
   {
@@ -47,8 +48,8 @@ type NewPostFormProps = {
 };
 
 const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
+  const { onSelectImage, selectedImageFile, setSelectedImageFile } = useSelectImage();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
-  const [selectedImageFile, setSelectedImageFile] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [postTextContent, setPostTextContent] = useState({
@@ -104,21 +105,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
       }
     }
     setLoading(false);
-  };
-
-  const onSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Only allow excatly 1 file to be uploaded
-    if (!e.target.files || e.target.files.length > 1) return;
-
-    // Using the FileReader
-    const reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = (readerEvent) => {
-      // Makes sure it's not null && an array of files
-      if (readerEvent.target?.result && !(readerEvent.target?.result instanceof ArrayBuffer)) {
-        setSelectedImageFile(readerEvent.target.result);
-      }
-    };
   };
 
   const onPostTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
