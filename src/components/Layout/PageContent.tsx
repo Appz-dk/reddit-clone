@@ -9,7 +9,15 @@ type PageContentProps = {
 const PageContent: React.FC<PageContentProps> = ({ children, maxWidth = "860px" }) => {
   return (
     // TODO: Change maxWidth to % for better support at very big screens ??
-    <Flex maxWidth={maxWidth} width="95%" justify="center" mx="auto" mt="6" gap="5">
+    <Flex
+      maxWidth={maxWidth}
+      width="95%"
+      justify="center"
+      mx="auto"
+      mt="6"
+      gap="5"
+      paddingBottom="4"
+    >
       {/* Left side */}
       <Flex direction="column" width={{ base: "100%", md: "65%" }}>
         {children && children[0]}

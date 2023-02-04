@@ -77,7 +77,9 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
         title: postTextContent.postTitle,
         body: postTextContent.postText,
         communityId: communityId as string,
-        creatorDisplayName: user.displayName || user.email!.split("@")[0],
+        creatorDisplayName: (user.displayName?.replaceAll(" ", "") || user.email!.split("@")[0])
+          .replaceAll(".", "")
+          .trim(),
         creatorId: user?.uid,
         createdAt: serverTimestamp() as Timestamp,
         voteStatus: 0,
@@ -99,6 +101,9 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
           imageURL: imageDownloadUrl,
         });
       }
+
+      // redirect the user back to the communityPage
+      router.back();
     } catch (error: unknown) {
       console.log("handleCreatePost error", error);
       if (error instanceof Error) {
@@ -106,8 +111,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
       }
     }
     setLoading(false);
-    // redirect the user back to the communityPage
-    router.back();
   };
 
   const onSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
