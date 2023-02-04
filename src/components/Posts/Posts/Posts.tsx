@@ -6,6 +6,7 @@ import PostItem from "./PostItem";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase/clientApp";
 import { usePosts } from "../../../hooks/usePosts";
+import PostLoader from "./PostLoader";
 
 type PostsProps = {
   communityData: Community;
@@ -13,7 +14,7 @@ type PostsProps = {
 
 const Posts: React.FC<PostsProps> = ({ communityData }) => {
   const [user] = useAuthState(auth);
-  const { getPosts, postStateValue } = useGetPosts(communityData);
+  const { getPosts, postStateValue, loading } = useGetPosts(communityData);
   const { onVote, onDeletePost, onSelectPost } = usePosts();
 
   useEffect(() => {
@@ -23,19 +24,24 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
   if (!postStateValue.posts) return <div>no post</div>;
 
   return (
-    <Flex direction="column">
-      {postStateValue.posts.map((post) => (
-        <PostItem
-          key={post.id}
-          post={post}
-          userIsCreator={user?.uid === communityData.creatorId}
-          onVote={onVote}
-          onSelectPost={onSelectPost}
-          onDeletePost={onDeletePost}
-          userVoteStatus={undefined}
-        />
-      ))}
-    </Flex>
+    <>
+      {loading && <PostLoader />}
+      {!loading && (
+        <Flex direction="column">
+          {postStateValue.posts.map((post) => (
+            <PostItem
+              key={post.id}
+              post={post}
+              userIsCreator={user?.uid === communityData.creatorId}
+              onVote={onVote}
+              onSelectPost={onSelectPost}
+              onDeletePost={onDeletePost}
+              userVoteStatus={undefined}
+            />
+          ))}
+        </Flex>
+      )}
+    </>
   );
 };
 
