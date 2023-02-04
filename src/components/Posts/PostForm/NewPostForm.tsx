@@ -96,7 +96,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
         const imageDownloadUrl = await getDownloadURL(imageRef);
         // Update post document by adding imageURL
         await updateDoc(postDocRef, {
-          imageUrl: imageDownloadUrl,
+          imageURL: imageDownloadUrl,
         });
       }
     } catch (error: unknown) {

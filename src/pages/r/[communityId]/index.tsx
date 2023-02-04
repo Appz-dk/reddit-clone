@@ -9,6 +9,7 @@ import CommunityError from "../../../components/Communities/CommunityError";
 import Header from "../../../components/Communities/Header";
 import PageContent from "../../../components/Layout/PageContent";
 import CreatePostLink from "../../../components/Communities/CreatePostLink";
+import Posts from "../../../components/Posts/Posts/Posts";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -25,8 +26,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData, error }) =
       <PageContent>
         <>
           <CreatePostLink />
-          <div>Right Side</div>
-          <div>Right Side</div>
+          <Posts communityData={communityData} />
         </>
         <>
           <div>Left Side</div>
