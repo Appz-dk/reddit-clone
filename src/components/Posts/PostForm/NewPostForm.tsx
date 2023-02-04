@@ -13,7 +13,7 @@ import { addDoc, collection, serverTimestamp, Timestamp, updateDoc } from "fireb
 import { useRouter } from "next/router";
 import { firestore, storage } from "../../../firebase/clientApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import useSelectImage from "../../../hooks/useSelectFile";
+import useSelectImage from "../../../hooks/useSelectImage";
 
 const formTabs: TabItemType[] = [
   {
