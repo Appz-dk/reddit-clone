@@ -144,13 +144,13 @@ const PostItem: React.FC<PostItemProps> = ({
                 marginBlock="1rem"
                 borderRadius="4"
                 alt="post image"
-                display={loadingImage ? "none" : "block"}
+                display={loadingImage ? "none" : "unset"}
                 onLoad={() => setLoadingImage(false)}
               />
             </>
           )}
           {/* Footer */}
-          <Flex fontSize=".75rem" color="gray.500" gap="5" fontWeight="600">
+          <Flex fontSize=".75rem" color="gray.500" gap={{ base: "1", sm: "5" }} fontWeight="600">
             <Flex
               gap="2"
               p="1.5"

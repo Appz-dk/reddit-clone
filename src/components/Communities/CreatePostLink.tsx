@@ -19,9 +19,7 @@ const CreatePostLink = () => {
       setAuthModalState({ view: "login", open: true });
       return;
     }
-    // TODO: Could be replaced with props from /[communityId]/index.tsx
-    // by passing along communityId={communityData.id}
-    // Might work better with github pages
+
     const { communityId } = router.query;
     router.push(`/r/${communityId}/submit`);
   };

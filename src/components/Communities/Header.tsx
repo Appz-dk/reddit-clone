@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
       <Box bg="blue.400" height="50%"></Box>
       <Flex bg="white" height="50%" justify="center">
         <Flex gap="2" align="center" width="95%" flexGrow={1} maxWidth="860px" paddingInline="2">
-          <HeaderImage />
+          <HeaderImage imageUrl={communityStateValue.currentCommunity?.imageURL} />
           <Flex direction="column">
             <Text fontWeight="600" fontSize=".95rem">
               {communityData.id}

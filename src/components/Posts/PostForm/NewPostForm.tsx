@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import { firestore, storage } from "../../../firebase/clientApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import useSelectImage from "../../../hooks/useSelectImage";
+import { uploadImageToStorage } from "../../../api/uploadImageToStorage";
 
 const formTabs: TabItemType[] = [
   {
@@ -58,13 +59,13 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
   });
   const router = useRouter();
 
-  // TODO: Refactor the logic for talking to firebase into an api folder
+  // TODO: Refactor the logic for talking to firebase into api folder
   const handleCreatePost = async () => {
     if (!user) return;
-    try {
-      if (error) setError("");
-      setLoading(true);
+    if (error) setError("");
+    setLoading(true);
 
+    try {
       const { communityId } = router.query;
       // Create new post object
       const newPost: Post = {
@@ -85,17 +86,16 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
 
       // check for selctedFile
       if (selectedImageFile) {
-        // store image in firebase storage under posts/[postId]/image
-        const imageRef = ref(storage, `posts/${postDocRef.id}/image`);
-        await uploadString(imageRef, selectedImageFile, "data_url");
-        //getDownloadURL (returns imageURL)
-        const imageDownloadUrl = await getDownloadURL(imageRef);
+        const imageDownloadUrl = await uploadImageToStorage({
+          storage,
+          url: `posts/${postDocRef.id}/image`,
+          file: selectedImageFile,
+        });
         // Update post document by adding imageURL
         await updateDoc(postDocRef, {
           imageURL: imageDownloadUrl,
         });
       }
-
       // redirect the user back to the communityPage
       router.back();
     } catch (error: unknown) {

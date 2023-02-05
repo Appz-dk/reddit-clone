@@ -2,19 +2,26 @@ import { atom } from "recoil"
 import { Timestamp } from "firebase/firestore";
 
 export interface Post {
-  id?: string,
-  title: string,
-  body: string,
-  imageURL?: string,
-  createdAt: Timestamp,
+  id?: string;
+  title: string;
+  body: string;
+  imageURL?: string;
+  createdAt: Timestamp;
 
-  communityId: string,
-  communityImageURL?: string,
-  numberOfComments: number,
-  voteStatus: number,
+  communityId: string;
+  communityImageURL?: string;
+  numberOfComments: number;
+  voteStatus: number;
 
-  creatorId: string,
-  creatorDisplayName: string,
+  creatorId: string;
+  creatorDisplayName: string;
+}
+
+export type PostVote = {
+  id: string;
+  voteValue: number;
+  postId: string;
+  communityId: string;
 }
 
 interface PostState {

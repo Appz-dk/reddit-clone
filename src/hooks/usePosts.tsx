@@ -10,8 +10,10 @@ export const usePosts = () => {
   const [error, setError] = useState("");
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
 
-  const onVote = async () => {};
+  const onVote = async (post: Post, vote: number) => {};
+
   const onSelectPost = () => {};
+
   const onDeletePost = async (post: Post): Promise<boolean> => {
     // TODO: Decide if loading state here is necessary
     // And check if error state is necessary
