@@ -21,7 +21,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
     getPosts();
   }, []);
 
-  if (!postStateValue.posts) return <div>no post</div>;
+  if (!postStateValue.posts) return <div>no posts...</div>;
 
   return (
     <>
@@ -36,7 +36,9 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
               onVote={onVote}
               onSelectPost={onSelectPost}
               onDeletePost={onDeletePost}
-              userVoteStatus={undefined}
+              userVoteStatus={
+                postStateValue.postVotes.find((vote) => vote.postId === post.id)?.voteValue
+              }
             />
           ))}
         </Flex>

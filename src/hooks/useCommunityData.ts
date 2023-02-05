@@ -122,7 +122,13 @@ export const useCommunityData = () => {
 
   // Get communitySnippets for a user when they log in
   useEffect(() => {
-    if (!user) return
+    if (!user) {
+      setCommunityStateValue(prev => ({
+        ...prev,
+        mySnippets: []
+      }))
+      return
+    }
     getCommunitySnippets()
   }, [user])
 

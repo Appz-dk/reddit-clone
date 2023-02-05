@@ -7,19 +7,14 @@ import { FaRedditSquare } from "react-icons/fa";
 import { IoSparkles } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineLogin } from "react-icons/md";
-import { useResetRecoilState } from "recoil";
-import { communityState } from "../../../atoms/communitiesAtom";
 
 type UserMenuLoggedInProps = {
   user: User | null | undefined;
 };
 
 const UserMenuLoggedIn: React.FC<UserMenuLoggedInProps> = ({ user }) => {
-  const resetCommunityState = useResetRecoilState(communityState);
-
   const onLogout = async () => {
     await signOut(auth);
-    resetCommunityState();
   };
 
   return (
