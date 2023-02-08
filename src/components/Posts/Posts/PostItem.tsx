@@ -19,8 +19,8 @@ type PostItemProps = {
   post: Post;
   userIsCreator: boolean;
   userVoteStatus?: number;
-  onVote: (post: Post, voteValue: number) => void;
-  onSelectPost: () => void;
+  onVote: (event: React.MouseEvent, post: Post, voteValue: number) => void;
+  onSelectPost?: (post: Post) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
 };
 
@@ -35,6 +35,8 @@ const PostItem: React.FC<PostItemProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [loadingImage, setLoadingImage] = useState(true);
+  const singlePostPageView = !onSelectPost;
+
   const router = useRouter();
   const { communityId } = router.query;
 
@@ -61,20 +63,19 @@ const PostItem: React.FC<PostItemProps> = ({
     <>
       <Flex
         mt="4"
-        border="1px solid"
+        border={singlePostPageView ? "none" : "1px solid"}
         borderColor="gray.300"
         borderRadius="4"
-        cursor="pointer"
+        cursor={singlePostPageView ? "default" : "pointer"}
         _hover={{ borderColor: "gray.500" }}
-        // TODO: Maybe move to flex container of post info
-        onClick={onSelectPost}
+        onClick={() => onSelectPost && onSelectPost(post)}
       >
         {/* Left side */}
         <Flex
           direction="column"
           justify="start"
           align="center"
-          bg="gray.100"
+          bg={singlePostPageView ? "white" : "gray.100"}
           p="2"
           width="fit-content"
           gap="2px"
@@ -85,7 +86,7 @@ const PostItem: React.FC<PostItemProps> = ({
             fontSize="1.1rem"
             cursor="pointer"
             color={userVoteStatus === 1 ? "brand.100" : "gray.400"}
-            onClick={() => onVote(post, 1)}
+            onClick={(e) => onVote(e, post, 1)}
           />
           <Text fontSize=".75rem" fontWeight="600">
             {post.voteStatus}
@@ -95,7 +96,7 @@ const PostItem: React.FC<PostItemProps> = ({
             fontSize="1.1rem"
             cursor="pointer"
             color={userVoteStatus === -1 ? "#4379ff" : "gray.400"}
-            onClick={() => onVote(post, -1)}
+            onClick={(e) => onVote(e, post, -1)}
           />
         </Flex>
         {/* Right side */}

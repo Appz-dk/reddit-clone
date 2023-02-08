@@ -2,7 +2,6 @@ import {
   query,
   collection,
   where,
-  orderBy,
   getDocs,
   doc,
   deleteDoc,
@@ -10,6 +9,7 @@ import {
   increment,
 } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -25,8 +25,11 @@ export const usePosts = () => {
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
   const setAuthModalState = useSetRecoilState(authModalState);
   const communityStateValue = useRecoilValue(communityState);
+  const router = useRouter();
 
-  const onVote = async (post: Post, voteValue: number) => {
+  const onVote = async (event: React.MouseEvent, post: Post, voteValue: number) => {
+    // Stop propagation (So when we click on vote we do not also go to singlePageView)
+    event.stopPropagation();
     // Check for user, if not user => open auth modal
     if (!user) {
       setAuthModalState({ view: "login", open: true });
@@ -114,14 +117,29 @@ export const usePosts = () => {
         postVotes: [...updatedPostVotes],
       }));
 
-      //
+      // Also have to update selectedPost if on singlePostPageView
+      if (postStateValue.selectedPost) {
+        setPostStateValue((prev) => ({
+          ...prev,
+          selectedPost: updatedPost,
+        }));
+      }
     } catch (error: unknown) {
       console.log("onVote error", error);
     }
     setLoading(false);
   };
 
-  const onSelectPost = () => {};
+  const onSelectPost = (post: Post) => {
+    if (!post) return;
+    // Store selected post in state
+    setPostStateValue((prev) => ({
+      ...prev,
+      selectedPost: post,
+    }));
+    // Redirect user to /r/[communityId]/comments/[postId]
+    router.push(`/r/${post.communityId}/comments/${post.id}`);
+  };
 
   const onDeletePost = async (post: Post): Promise<boolean> => {
     // TODO: Decide if loading state here is necessary
@@ -158,11 +176,11 @@ export const usePosts = () => {
       )
     );
     // Id already inside of the documents (no need for id: doc.id,)
-    const postVotes = postVotesDocs.docs.map((doc) => ({ ...doc.data() })) as PostVote[];
+    const postVotes = postVotesDocs.docs.map((doc) => ({ ...doc.data() }));
     // Store in recoil state
     setPostStateValue((prev) => ({
       ...prev,
-      postVotes: postVotes,
+      postVotes: postVotes as PostVote[],
     }));
   };
 
@@ -170,7 +188,7 @@ export const usePosts = () => {
   useEffect(() => {
     // Have to check for both since the getCommunityPostVotes depends on both values
     if (!user || !communityStateValue.currentCommunity?.id) {
-      // Clear postVotes incase of no user
+      // Have to clear the postVotes when a user logs out (!user)
       setPostStateValue((prev) => ({
         ...prev,
         postVotes: [],
@@ -179,15 +197,6 @@ export const usePosts = () => {
     }
     getCommunityPostVotes(communityStateValue.currentCommunity?.id);
   }, [user, communityStateValue.currentCommunity?.id]);
-
-  // useEffect(() => {
-  //   if (!user) {
-  //     setPostStateValue((prev) => ({
-  //       ...prev,
-  //       postVotes: [],
-  //     }));
-  //   }
-  // }, [user]);
 
   return {
     loading,
