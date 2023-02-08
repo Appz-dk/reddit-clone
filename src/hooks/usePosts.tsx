@@ -141,7 +141,8 @@ export const usePosts = () => {
     router.push(`/r/${post.communityId}/comments/${post.id}`);
   };
 
-  const onDeletePost = async (post: Post): Promise<boolean> => {
+  const onDeletePost = async (event: React.MouseEvent, post: Post): Promise<boolean> => {
+    event.stopPropagation();
     // TODO: Decide if loading state here is necessary
     // And check if error state is necessary
     if (error) setError("");

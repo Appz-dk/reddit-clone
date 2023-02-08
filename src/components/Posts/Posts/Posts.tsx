@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { Community } from "../../../atoms/communitiesAtom";
-import { useGetPosts } from "../../../api/getPosts";
+import { useGetPosts } from "../../../api/useGetPosts";
 import PostItem from "./PostItem";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase/clientApp";
@@ -14,7 +14,7 @@ type PostsProps = {
 
 const Posts: React.FC<PostsProps> = ({ communityData }) => {
   const [user] = useAuthState(auth);
-  const { getPosts, postStateValue, loading } = useGetPosts(communityData);
+  const { getPosts, postStateValue, loading } = useGetPosts(communityData.id);
   const { onVote, onDeletePost, onSelectPost } = usePosts();
 
   useEffect(() => {

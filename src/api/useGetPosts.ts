@@ -1,11 +1,12 @@
 import { query, collection, where, orderBy, getDocs } from "firebase/firestore";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { Community } from "../atoms/communitiesAtom";
 import { Post, postState } from "../atoms/postsAtom";
 import { firestore } from "../firebase/clientApp";
 
-export const useGetPosts = (communityData: Community) => {
+// TODO: Maybe change so it's no longer a "custom hook" format, but just a getPosts fuction.
+// Like in the getPost.ts
+export const useGetPosts = (communityId: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
@@ -17,7 +18,7 @@ export const useGetPosts = (communityData: Community) => {
       // Create firebase query for the posts we want
       const postsQuery = query(
         collection(firestore, "posts"),
-        where("communityId", "==", `${communityData.id}`),
+        where("communityId", "==", `${communityId}`),
         orderBy("createdAt", "desc")
       );
       // get posts from firebase with the query

@@ -21,7 +21,7 @@ type PostItemProps = {
   userVoteStatus?: number;
   onVote: (event: React.MouseEvent, post: Post, voteValue: number) => void;
   onSelectPost?: (post: Post) => void;
-  onDeletePost: (post: Post) => Promise<boolean>;
+  onDeletePost: (event: React.MouseEvent, post: Post) => Promise<boolean>;
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -32,21 +32,19 @@ const PostItem: React.FC<PostItemProps> = ({
   onSelectPost,
   onDeletePost,
 }) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [loadingImage, setLoadingImage] = useState(true);
   const singlePostPageView = !onSelectPost;
 
-  const router = useRouter();
-  const { communityId } = router.query;
-
-  const handleDeletePost = async () => {
+  const handleDeletePost = async (event: React.MouseEvent) => {
     // doubble check user is creator
     if (!userIsCreator) return;
     try {
       if (error) setError("");
       setLoading(true);
-      const success = await onDeletePost(post);
+      const success = await onDeletePost(event, post);
 
       if (!success) {
         throw new Error("Failed to delete post");
@@ -57,6 +55,9 @@ const PostItem: React.FC<PostItemProps> = ({
       console.log("handleDeletePost error", error);
     }
     setLoading(false);
+    if (singlePostPageView) {
+      router.push(`/r/${post.communityId}`);
+    }
   };
 
   return (
@@ -111,7 +112,7 @@ const PostItem: React.FC<PostItemProps> = ({
         >
           {/* post info */}
           <Flex align="center">
-            {!communityId && (
+            {!singlePostPageView && (
               <>
                 <Image as={FaReddit} size="18" mr="2" />
 
