@@ -5,6 +5,7 @@ import { getPost } from "../../../../api/getPost";
 import { Post } from "../../../../atoms/postsAtom";
 import About from "../../../../components/Communities/About";
 import PageContent from "../../../../components/Layout/PageContent";
+import Comments from "../../../../components/Posts/Comments/Comments";
 import PostItem from "../../../../components/Posts/Posts/PostItem";
 import { auth } from "../../../../firebase/clientApp";
 import { useCommunityData } from "../../../../hooks/useCommunityData";
@@ -45,7 +46,7 @@ const PostViewPage = () => {
             userVoteStatus={postVotes.find((vote) => vote.postId === selectedPost.id)?.voteValue}
           />
         )}
-        {/* Comments */}
+        <Comments />
       </>
       <>
         {/* Left side content */}

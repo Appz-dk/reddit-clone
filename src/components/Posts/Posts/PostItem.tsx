@@ -79,7 +79,8 @@ const PostItem: React.FC<PostItemProps> = ({
           p="2"
           width="fit-content"
           gap="2px"
-          borderLeftRadius="4"
+          borderTopLeftRadius="4"
+          borderBottomLeftRadius={singlePostPageView ? "0" : "4"}
         >
           <Icon
             as={userVoteStatus === 1 ? BsArrowUpCircleFill : BsArrowUpCircle}
@@ -107,7 +108,8 @@ const PostItem: React.FC<PostItemProps> = ({
           gap="2"
           bg="white"
           flexGrow="1"
-          borderRightRadius="4"
+          borderTopRightRadius="4"
+          borderBottomRightRadius={singlePostPageView ? "0" : "4"}
         >
           {/* post info */}
           <Flex align="center">
