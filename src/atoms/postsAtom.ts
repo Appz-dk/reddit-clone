@@ -24,7 +24,7 @@ export type PostVote = {
   communityId: string;
 }
 
-interface PostState {
+export interface PostState {
   posts: Post[]
   selectedPost: Post | null
   postVotes: PostVote[]

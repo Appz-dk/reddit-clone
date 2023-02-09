@@ -5,17 +5,9 @@ import { Post, postState } from "../../../atoms/postsAtom";
 import CommentItem, { Comment } from "./CommentItem";
 import CommentInput from "./CommentInput";
 import NoUser from "./NoUser";
-import {
-  collection,
-  doc,
-  increment,
-  serverTimestamp,
-  Timestamp,
-  writeBatch,
-} from "firebase/firestore";
-import { firestore } from "../../../firebase/clientApp";
 import { useSetRecoilState } from "recoil";
 import { getPostComments } from "../../../api/getPostComments";
+import { createNewComment } from "../../../api/createNewComment";
 
 type CommentsProps = {
   user?: User | null;
@@ -34,43 +26,15 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
     if (!user) return;
     setIsCreatingComment(true);
     try {
-      // init batch, get docRef and create new comment
-      const batch = writeBatch(firestore);
-      const commentDocRef = doc(collection(firestore, "comments"));
-      const newComment: Comment = {
-        id: commentDocRef.id,
-        text: commentText,
-        creatorId: user.uid,
-        creatorDisplayName: (user.displayName?.replaceAll(" ", "") || user.email!.split("@")[0])
-          .replaceAll(".", "")
-          .trim(),
-        communityId: communityId,
-        postId: selectedPost.id!,
-        postTitle: selectedPost.title,
-        createdAt: serverTimestamp() as Timestamp,
-      };
-      // Set new comment
-      batch.set(commentDocRef, newComment);
-
-      // Update numberOfComments on the selected post
-      const postDocRef = doc(firestore, `posts/${selectedPost.id}`);
-      batch.update(postDocRef, {
-        numberOfComments: increment(1),
+      const newComment = await createNewComment({
+        commentText,
+        communityId,
+        selectedPost,
+        user,
+        setPostStateValue,
       });
-      // commit changes
-      await batch.commit();
-
-      // Update recoil state
-      setPostStateValue((prev) => ({
-        ...prev,
-        selectedPost: {
-          ...prev.selectedPost!,
-          numberOfComments: prev.selectedPost?.numberOfComments! + 1,
-        },
-      }));
-      // Insert the newComment into the beginning of the comments state array
+      // Add new comment to start of comments array & reset commentText state
       setComments((prev) => [newComment, ...prev]);
-      // reset commentText state
       setCommentText("");
     } catch (error) {
       console.log("onCreateComment error", error);
@@ -81,8 +45,10 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
   const onDeleteComment = async (comment: Comment) => {};
 
   const handleGetPostComments = async () => {
+    setLoadingComments(true);
     const comments = await getPostComments(selectedPost.id!);
     setComments(comments as Comment[]);
+    setLoadingComments(false);
   };
 
   useEffect(() => {

@@ -7,7 +7,6 @@ export const getPost = async (postId: string) => {
     return { id: postDoc.id, ...postDoc.data() }
   } catch (error) {
     console.log("getPost error", error)
-    return error
   }
 
 }
