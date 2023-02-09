@@ -62,6 +62,7 @@ const PostItem: React.FC<PostItemProps> = ({
 
   return (
     <>
+      {/* TODO: Change to a grid layout so that the image can span more to the left side */}
       <Flex
         border={singlePostPageView ? "none" : "1px solid"}
         borderColor="gray.300"
@@ -105,7 +106,7 @@ const PostItem: React.FC<PostItemProps> = ({
           direction="column"
           p="2"
           paddingBottom="0.5"
-          gap="2"
+          gap="1"
           bg="white"
           flexGrow="1"
           borderTopRightRadius="4"

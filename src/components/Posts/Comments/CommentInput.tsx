@@ -5,13 +5,26 @@ import React from "react";
 type CommentInputProps = {
   user: User;
   commentText: string;
+  isCreatingComment: boolean;
   setCommentText: (text: string) => void;
+  onCreateComment: (commentText: string) => void;
 };
 
-const CommentInput: React.FC<CommentInputProps> = ({ user, commentText, setCommentText }) => {
+const CommentInput: React.FC<CommentInputProps> = ({
+  user,
+  commentText,
+  isCreatingComment,
+  setCommentText,
+  onCreateComment,
+}) => {
+  // TODO: Refactor into helper function and replace everywhere its used
+  const displayName = (user.displayName?.replaceAll(" ", "") || user.email!.split("@")[0])
+    .replaceAll(".", "")
+    .trim();
+
   return (
-    <Flex direction="column">
-      <Text fontSize=".7rem">Comment as {user?.displayName}</Text>
+    <Flex direction="column" w="full" paddingInline={{ base: "2", sm: "4" }}>
+      <Text fontSize=".7rem">Comment as {displayName}</Text>
       <Box
         border="1px solid"
         borderColor="gray.200"
@@ -27,10 +40,15 @@ const CommentInput: React.FC<CommentInputProps> = ({ user, commentText, setComme
           _focus={{}}
           _focusVisible={{}}
           value={commentText}
-          onChange={(e) => setCommentText(e.currentTarget.value)}
+          onChange={(e) => setCommentText(e.target.value)}
         />
         <Flex bg="gray.200" p="1" justify="end" borderRadius="0 0 4px 4px">
-          <Button size="xs" isDisabled={!commentText}>
+          <Button
+            size="xs"
+            isDisabled={!commentText}
+            isLoading={isCreatingComment}
+            onClick={() => onCreateComment(commentText)}
+          >
             Comment
           </Button>
         </Flex>

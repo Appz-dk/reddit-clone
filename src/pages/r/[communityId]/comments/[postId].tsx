@@ -38,15 +38,21 @@ const PostViewPage = () => {
       <>
         {/* Right side content */}
         {selectedPost && (
-          <PostItem
-            post={selectedPost}
-            onVote={onVote}
-            onDeletePost={onDeletePost}
-            userIsCreator={selectedPost?.creatorId === user?.uid}
-            userVoteStatus={postVotes.find((vote) => vote.postId === selectedPost.id)?.voteValue}
-          />
+          <>
+            <PostItem
+              post={selectedPost}
+              onVote={onVote}
+              onDeletePost={onDeletePost}
+              userIsCreator={selectedPost?.creatorId === user?.uid}
+              userVoteStatus={postVotes.find((vote) => vote.postId === selectedPost.id)?.voteValue}
+            />
+            <Comments
+              user={user}
+              communityId={selectedPost?.communityId}
+              selectedPost={selectedPost}
+            />
+          </>
         )}
-        <Comments />
       </>
       <>
         {/* Left side content */}
