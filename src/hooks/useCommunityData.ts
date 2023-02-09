@@ -1,13 +1,15 @@
 import { Community, CommunitySnippet, communityState } from "../atoms/communitiesAtom"
 import { useRecoilState, useSetRecoilState } from "recoil"
-import { collection, doc, getDocs, increment, writeBatch } from "firebase/firestore"
+import { collection, doc, getDoc, getDocs, increment, writeBatch } from "firebase/firestore"
 import { auth, firestore } from "../firebase/clientApp"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { authModalState } from "../atoms/authModalAtom"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
 
 
 export const useCommunityData = () => {
+  const router = useRouter()
   const [communityStateValue, setCommunityStateValue] = useRecoilState(communityState)
   const setAuthModalState = useSetRecoilState(authModalState)
   const [user] = useAuthState(auth)
@@ -36,6 +38,23 @@ export const useCommunityData = () => {
       }
     }
     setLoading(false)
+  }
+
+  const getCommunityData = async (communityId: string) => {
+    try {
+      // TODO: Check if a loading state here is needed
+      const communityDoc = await getDoc(doc(firestore, `communities/${communityId}`))
+      setCommunityStateValue(prev => ({
+        ...prev,
+        currentCommunity: { id: communityDoc.id, ...communityDoc.data() } as Community
+      }))
+    } catch (error: unknown) {
+      console.log("getCommunitydata error", error)
+      if (error instanceof Error) {
+        setError(error.message)
+      }
+    }
+
   }
 
   // Create new community snippet & increment numberOfMembers, using batch write
@@ -131,6 +150,15 @@ export const useCommunityData = () => {
     }
     getCommunitySnippets()
   }, [user])
+
+
+  // Solves no communityData on page refresh/links straight to pages without SSR
+  useEffect(() => {
+    const { communityId } = router.query
+    if (!communityStateValue.currentCommunity && communityId && typeof communityId === "string") {
+      getCommunityData(communityId);
+    }
+  }, [communityStateValue.currentCommunity, router.query]);
 
   return {
     communityStateValue,

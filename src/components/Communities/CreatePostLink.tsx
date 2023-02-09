@@ -25,7 +25,7 @@ const CreatePostLink = () => {
   };
 
   return (
-    <Flex justify="center" align="center" gap="3" bg="white" borderRadius="4" padding="2">
+    <Flex justify="center" align="center" gap="3" bg="white" borderRadius="4" padding="2" mb="5">
       <Icon as={FaReddit} fontSize="2rem" color="gray.300" />
       <Input
         flexGrow={1}

@@ -27,7 +27,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
     <>
       {loading && <PostLoader />}
       {!loading && (
-        <Flex direction="column">
+        <Flex direction="column" gap="5">
           {postStateValue.posts.map((post) => (
             <PostItem
               key={post.id}

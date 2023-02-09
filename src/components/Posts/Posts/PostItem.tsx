@@ -63,7 +63,6 @@ const PostItem: React.FC<PostItemProps> = ({
   return (
     <>
       <Flex
-        mt="4"
         border={singlePostPageView ? "none" : "1px solid"}
         borderColor="gray.300"
         borderRadius="4"
