@@ -8,6 +8,8 @@ import NoUser from "./NoUser";
 import { useSetRecoilState } from "recoil";
 import { getPostComments } from "../../../api/getPostComments";
 import { createNewComment } from "../../../api/createNewComment";
+import { deleteComment } from "../../../api/deleteComment";
+import { Timestamp } from "firebase/firestore";
 
 type CommentsProps = {
   user?: User | null;
@@ -21,6 +23,7 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
   const [commentText, setCommentText] = useState("");
   const [loadingComments, setLoadingComments] = useState(false);
   const [isCreatingComment, setIsCreatingComment] = useState(false);
+  const [isDeletingComment, setIsDeletingComment] = useState(false);
 
   const onCreateComment = async () => {
     if (!user) return;
@@ -42,7 +45,12 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
     setIsCreatingComment(false);
   };
 
-  const onDeleteComment = async (comment: Comment) => {};
+  const onDeleteComment = async (comment: Comment) => {
+    setIsDeletingComment(true);
+    await deleteComment(comment, setPostStateValue);
+    setComments((prev) => prev.filter((prev) => prev.id !== comment.id));
+    setIsDeletingComment(false);
+  };
 
   const handleGetPostComments = async () => {
     setLoadingComments(true);
@@ -52,10 +60,9 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
   };
 
   useEffect(() => {
-    if (selectedPost) {
-      handleGetPostComments();
-    }
-  }, [selectedPost]);
+    console.log("fecting comments");
+    handleGetPostComments();
+  }, []);
 
   return (
     <Stack bg="white" align="center" p="4" spacing="4" borderRadius="0 0 4px 4px">
@@ -75,6 +82,8 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
             key={comment.id}
             comment={comment}
             userIsCreator={comment.creatorId === user?.uid}
+            onDeleteComment={onDeleteComment}
+            isDeletingComment={isDeletingComment}
           />
         ))}
     </Stack>

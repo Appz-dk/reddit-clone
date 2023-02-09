@@ -51,6 +51,13 @@ export const createNewComment = async ({ user, commentText, communityId, selecte
         numberOfComments: prev.selectedPost?.numberOfComments! + 1,
       },
     }));
+
+    // Have to adjust the createdAt field before returning the newComment
+    // since the serverTimestamp function is only called on the server
+    // if we do not do this and store the comment in state, the time will show as invalid,
+    // until comments are fetched again from the database.
+    const fakeTimestamp = { seconds: Date.now() / 1000 } as Timestamp;
+    newComment.createdAt = fakeTimestamp
     return newComment
   } catch (error) {
     throw error

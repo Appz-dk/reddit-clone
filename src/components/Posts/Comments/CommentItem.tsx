@@ -1,4 +1,4 @@
-import { Flex, Icon, Stack, Text } from "@chakra-ui/react";
+import { Button, Flex, Icon, Stack, Text } from "@chakra-ui/react";
 import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import React from "react";
@@ -24,9 +24,16 @@ export type Comment = {
 type CommentItemProps = {
   comment: Comment;
   userIsCreator: boolean;
+  onDeleteComment: (comment: Comment) => void;
+  isDeletingComment: boolean;
 };
 
-const CommentItem: React.FC<CommentItemProps> = ({ comment, userIsCreator }) => {
+const CommentItem: React.FC<CommentItemProps> = ({
+  comment,
+  userIsCreator,
+  onDeleteComment,
+  isDeletingComment,
+}) => {
   const userVoteStatus = undefined;
   // const userIsCreator = true;
   return (
@@ -60,12 +67,32 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, userIsCreator }) => 
           />
           {userIsCreator && (
             <>
-              <Text fontSize=".6rem" fontWeight="600" color="gray.500" cursor="pointer">
+              <Text
+                fontSize=".6rem"
+                p="1"
+                borderRadius="4"
+                fontWeight="600"
+                color="gray.500"
+                cursor="pointer"
+                _hover={{ bg: "blue.400", color: "white" }}
+              >
                 Edit
               </Text>
-              <Text fontSize=".6rem" fontWeight="600" color="gray.500" cursor="pointer">
+              <Button
+                fontSize=".6rem"
+                fontWeight="600"
+                color="gray.500"
+                cursor="pointer"
+                p="1"
+                bg="unset"
+                size="xs"
+                borderRadius="4"
+                _hover={{ bg: "red.400", color: "white" }}
+                onClick={() => onDeleteComment(comment)}
+                isLoading={isDeletingComment}
+              >
                 Delete
-              </Text>
+              </Button>
             </>
           )}
         </Flex>
