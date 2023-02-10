@@ -2,7 +2,7 @@ import { IconType } from "react-icons/lib"
 import { TiHome } from "react-icons/ti"
 import { atom } from "recoil"
 
-export type DropDownMenuItem = {
+export type DropdownMenuItem = {
   imageURL?: string
   displayText: string
   icon: IconType
@@ -10,24 +10,24 @@ export type DropDownMenuItem = {
   link: string
 }
 
-interface DropDownMenuState {
+interface DropdownMenuState {
   isOpen: boolean
-  selectedMenuItem: DropDownMenuItem
+  selectedMenuItem: DropdownMenuItem
 }
 
-export const defaultMenuItem: DropDownMenuItem = {
+export const defaultMenuItem: DropdownMenuItem = {
   displayText: "Home",
   icon: TiHome,
   iconColor: "black",
   link: "/",
 }
 
-export const defaultMenuState: DropDownMenuState = {
+export const defaultMenuState: DropdownMenuState = {
   isOpen: false,
   selectedMenuItem: defaultMenuItem
 }
 
-export const DropDownMenuState = atom<DropDownMenuState>({
+export const dropdownMenuState = atom<DropdownMenuState>({
   key: "dropDownMenuState",
   default: defaultMenuState
 })

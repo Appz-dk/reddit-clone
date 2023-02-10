@@ -18,8 +18,10 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
   const { onVote, onDeletePost, onSelectPost } = usePosts();
 
   useEffect(() => {
+    // Have to fetch posts everytime communityData changes
+    // e.g. user goes to a new community page
     getPosts();
-  }, []);
+  }, [communityData]);
 
   if (!postStateValue.posts) return <div>no posts...</div>;
 
