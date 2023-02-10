@@ -66,6 +66,8 @@ export const useCommunityData = () => {
       const snippetInfo: CommunitySnippet = {
         communityId: communityData.id,
         imageURL: communityData.imageURL || "",
+        // conditonally adds the key value to this object
+        ...(user?.uid === communityData.creatorId && { isModerator: true })
       }
       // Initiate batch
       const batch = writeBatch(firestore)

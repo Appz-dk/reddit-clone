@@ -16,12 +16,14 @@ const Community: React.FC = () => {
         padding="0 4px"
         cursor="pointer"
         borderRadius={4}
-        _hover={{ outline: "1px soild", outlineColor: "gray.200" }}>
+        _hover={{ outline: "1px soild", outlineColor: "gray.200" }}
+      >
         <Flex
           align="center"
           justify="space-between"
           width={{ base: "auto", lg: "200px" }}
-          maxWidth="200px">
+          maxWidth="200px"
+        >
           <Flex>
             <Icon as={TiHome} fontSize="1.2rem" mr={1} />
             <Text fontWeight="600" fontSize=".8rem" display={{ base: "none", lg: "unset" }}>

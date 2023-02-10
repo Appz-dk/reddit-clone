@@ -60,7 +60,7 @@ export const useCreateCommunity = (user?: User | null): useCreateCommunityHook =
         // Add community to user's communitySnippet
         transaction.set(doc(firestore, `users/${user.uid}/communitySnippets`, communityData.communityName), {
           communityId: communityData.communityName,
-          isModerater: true,
+          isModerator: true,
         });
       });
     } catch (error: unknown) {
