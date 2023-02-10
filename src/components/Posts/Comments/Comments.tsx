@@ -22,9 +22,10 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
   const setPostStateValue = useSetRecoilState(postState);
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
-  const [loadingComments, setLoadingComments] = useState(false);
+  // TODO: LoadingComments, start as false or true
+  const [loadingComments, setLoadingComments] = useState(true);
   const [isCreatingComment, setIsCreatingComment] = useState(false);
-  const [isDeletingComment, setIsDeletingComment] = useState(false);
+  const [isDeletingCommentId, setIsDeletingCommentId] = useState("");
 
   const onCreateComment = async () => {
     if (!user) return;
@@ -47,10 +48,10 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
   };
 
   const onDeleteComment = async (comment: Comment) => {
-    setIsDeletingComment(true);
+    setIsDeletingCommentId(comment.id);
     await deleteComment(comment, setPostStateValue);
     setComments((prev) => prev.filter((prev) => prev.id !== comment.id));
-    setIsDeletingComment(false);
+    setIsDeletingCommentId("");
   };
 
   const handleGetPostComments = async () => {
@@ -85,7 +86,7 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
             comment={comment}
             userIsCreator={comment.creatorId === user?.uid}
             onDeleteComment={onDeleteComment}
-            isDeletingComment={isDeletingComment}
+            isDeletingComment={isDeletingCommentId === comment.id}
           />
         ))}
       {comments.length === 0 && !loadingComments && <NoComments />}
