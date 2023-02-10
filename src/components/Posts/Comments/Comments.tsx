@@ -9,7 +9,8 @@ import { useSetRecoilState } from "recoil";
 import { getPostComments } from "../../../api/getPostComments";
 import { createNewComment } from "../../../api/createNewComment";
 import { deleteComment } from "../../../api/deleteComment";
-import { Timestamp } from "firebase/firestore";
+import NoComments from "./NoComments";
+import CommentsLoader from "./CommentsLoader";
 
 type CommentsProps = {
   user?: User | null;
@@ -60,12 +61,12 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
   };
 
   useEffect(() => {
-    console.log("fecting comments");
     handleGetPostComments();
   }, []);
 
   return (
     <Stack bg="white" align="center" p="4" spacing="4" borderRadius="0 0 4px 4px">
+      {/* Comment input area */}
       {user && (
         <CommentInput
           user={user}
@@ -76,7 +77,8 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
         />
       )}
       {!user && <NoUser />}
-      {comments &&
+      {/* Comments area */}
+      {comments.length > 0 &&
         comments.map((comment) => (
           <CommentItem
             key={comment.id}
@@ -86,6 +88,8 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost, communityId }) 
             isDeletingComment={isDeletingComment}
           />
         ))}
+      {comments.length === 0 && !loadingComments && <NoComments />}
+      {loadingComments && <CommentsLoader />}
     </Stack>
   );
 };

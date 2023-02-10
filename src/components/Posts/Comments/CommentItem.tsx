@@ -67,17 +67,19 @@ const CommentItem: React.FC<CommentItemProps> = ({
           />
           {userIsCreator && (
             <>
-              <Text
+              <Button
                 fontSize=".6rem"
                 p="1"
                 borderRadius="4"
                 fontWeight="600"
+                bg="unset"
+                size="xs"
                 color="gray.500"
                 cursor="pointer"
                 _hover={{ bg: "blue.400", color: "white" }}
               >
                 Edit
-              </Text>
+              </Button>
               <Button
                 fontSize=".6rem"
                 fontWeight="600"
