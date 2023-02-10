@@ -24,8 +24,8 @@ const Community: React.FC = () => {
           width={{ base: "auto", lg: "200px" }}
           maxWidth="200px"
         >
-          <Flex>
-            <Icon as={TiHome} fontSize="1.2rem" mr={1} />
+          <Flex align="center">
+            <Icon as={TiHome} boxSize="5" mr={1} />
             <Text fontWeight="600" fontSize=".8rem" display={{ base: "none", lg: "unset" }}>
               {/* To prevent the community name being too long */}
               {"Home".length > 17 ? "Home".substring(0, 17) + "..." : "Home"}
