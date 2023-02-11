@@ -14,6 +14,8 @@ import { useRouter } from "next/router";
 import { firestore, storage } from "../../../firebase/clientApp";
 import useSelectImage from "../../../hooks/useSelectImage";
 import { uploadImageToStorage } from "../../../api/uploadImageToStorage";
+import { useRecoilValue } from "recoil";
+import { communityState } from "../../../atoms/communitiesAtom";
 
 const formTabs: TabItemType[] = [
   {
@@ -48,6 +50,7 @@ type NewPostFormProps = {
 };
 
 const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
+  const { currentCommunity } = useRecoilValue(communityState);
   const { onSelectImage, selectedImageFile, setSelectedImageFile } = useSelectImage();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
   const [loading, setLoading] = useState(false);
@@ -58,6 +61,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
   });
   const router = useRouter();
 
+  // Create New Post
   // TODO: Refactor the logic for talking to firebase into api folder
   const handleCreatePost = async () => {
     if (!user) return;
@@ -78,6 +82,8 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
         createdAt: serverTimestamp() as Timestamp,
         voteStatus: 0,
         numberOfComments: 0,
+        // Check if current community have a imageURL & add it to the object
+        ...(currentCommunity?.imageURL && { communityImageURL: currentCommunity.imageURL }),
       };
 
       // store post in database
