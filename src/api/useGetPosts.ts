@@ -4,8 +4,6 @@ import { useRecoilState } from "recoil";
 import { Post, postState } from "../atoms/postsAtom";
 import { firestore } from "../firebase/clientApp";
 
-// TODO: Maybe change so it's no longer a "custom hook" format, but just a getPosts fuction.
-// Like in the getPost.ts
 export const useGetPosts = (communityId: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

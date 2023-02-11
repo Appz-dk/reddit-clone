@@ -118,9 +118,11 @@ const PostItem: React.FC<PostItemProps> = ({
           <Flex align="center" wrap="wrap">
             {(homePage || singlePostPageView) && (
               <>
-                {!post.communityImageURL && <Image as={FaReddit} boxSize="19px" mr="2" />}
+                {!post.communityImageURL && (
+                  <Image as={FaReddit} boxSize="19px" mr="2" borderRadius="full" />
+                )}
                 {post.communityImageURL && (
-                  <Image src={post.communityImageURL} boxSize="19px" mr="2" />
+                  <Image src={post.communityImageURL} boxSize="19px" mr="2" borderRadius="full" />
                 )}
 
                 <Text
