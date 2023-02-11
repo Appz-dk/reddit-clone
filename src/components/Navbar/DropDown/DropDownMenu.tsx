@@ -31,8 +31,6 @@ const Community: React.FC = () => {
             {!imageURL && <Icon as={icon} boxSize="5" color={iconColor} />}
             {imageURL && <Image src={imageURL} boxSize="5" borderRadius="full" />}
             <Text fontWeight="600" fontSize=".8rem" display={{ base: "none", lg: "unset" }}>
-              {/* To prevent the community name being too long */}
-              {/* {"Home".length > 17 ? "Home".substring(0, 17) + "..." : "Home"} */}
               {displayText}
             </Text>
           </Flex>

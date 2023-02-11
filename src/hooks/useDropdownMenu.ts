@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { DropdownMenuItem, dropdownMenuState } from "../atoms/dropdownMenuAtom";
 
@@ -7,13 +6,16 @@ const useDropdownMenu = () => {
   const router = useRouter()
   const [dropdownState, setDropdownState] = useRecoilState(dropdownMenuState)
 
-  const onSelectMenuItem = (menuItem: DropdownMenuItem) => {
+  const onSelectMenuItem = (menuItem: DropdownMenuItem, skipRedirect: boolean = false) => {
     setDropdownState(prev => ({
       ...prev,
       selectedMenuItem: menuItem
     }))
 
-    router.push(menuItem.link)
+    // Skip the redirect on page refresh or user loading straigth to /r/community
+    if (!skipRedirect) {
+      router.push(menuItem.link)
+    }
   }
 
   const toggleMenuOpen = () => {

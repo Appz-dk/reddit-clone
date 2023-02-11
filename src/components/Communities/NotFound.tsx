@@ -6,7 +6,7 @@ const NotFound = () => {
   return (
     <Flex direction="column" gap="4" justify="center" align="center" height="80vh">
       <Text fontWeight="600" fontSize="1rem">
-        Sorry, there aren't any communities with that name on this Reddit clone.
+        Sorry, there are no communities with that name on this Reddit clone.
       </Text>
       <Text fontSize=".85rem">
         That community may have been banned or the community name is incorrect

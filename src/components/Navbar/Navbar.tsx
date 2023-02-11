@@ -5,13 +5,16 @@ import RightContent from "./RightContent/RightContent";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/clientApp";
 import Community from "./Dropdown/DropdownMenu";
+import useDropdownMenu from "../../hooks/useDropdownMenu";
+import { defaultMenuItem } from "../../atoms/dropdownMenuAtom";
 
 const Navbar: React.FC = () => {
+  const { onSelectMenuItem } = useDropdownMenu();
   const [user, loading, error] = useAuthState(auth);
 
   return (
     <Flex bg="white" height="44px" padding="6px 12px" justify="space-between">
-      <Flex align="center">
+      <Flex align="center" cursor="pointer" onClick={() => onSelectMenuItem(defaultMenuItem)}>
         <Image src="/images/redditFace.svg" alt="reddit logo" height="30px" />
         <Image
           src="/images/redditText.svg"

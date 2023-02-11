@@ -8,10 +8,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/clientApp";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../atoms/authModalAtom";
+import useDropdownMenu from "../../hooks/useDropdownMenu";
 
 const CreatePostLink = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);
+  const { toggleMenuOpen } = useDropdownMenu();
   const setAuthModalState = useSetRecoilState(authModalState);
 
   const onRedirect = () => {
@@ -19,8 +21,13 @@ const CreatePostLink = () => {
       setAuthModalState({ view: "login", open: true });
       return;
     }
-
     const { communityId } = router.query;
+
+    if (!communityId) {
+      toggleMenuOpen();
+      return;
+    }
+
     router.push(`/r/${communityId}/submit`);
   };
 
@@ -48,8 +55,8 @@ const CreatePostLink = () => {
         onClick={onRedirect}
         aria-label="Link to create post page"
       />
-      <Icon as={AiOutlinePicture} fontSize="1.4rem" color="gray.300" />
-      <Icon as={BsLink45Deg} fontSize="1.4rem" color="gray.300" />
+      <Icon as={AiOutlinePicture} boxSize="6" color="gray.300" />
+      <Icon as={BsLink45Deg} boxSize="6" color="gray.300" />
     </Flex>
   );
 };
