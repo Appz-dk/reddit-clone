@@ -22,6 +22,7 @@ type PostItemProps = {
   onVote: (event: React.MouseEvent, post: Post, voteValue: number) => void;
   onSelectPost?: (post: Post) => void;
   onDeletePost: (event: React.MouseEvent, post: Post) => Promise<boolean>;
+  homePage?: boolean;
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -31,6 +32,7 @@ const PostItem: React.FC<PostItemProps> = ({
   onVote,
   onSelectPost,
   onDeletePost,
+  homePage,
 }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -62,7 +64,7 @@ const PostItem: React.FC<PostItemProps> = ({
 
   return (
     <>
-      {/* TODO: Change to a grid layout so that the image can span more to the left side */}
+      {/* TODO: Change to a grid layout so that the image can span more to the left side? */}
       <Flex
         border={singlePostPageView ? "none" : "1px solid"}
         borderColor="gray.300"
@@ -113,13 +115,21 @@ const PostItem: React.FC<PostItemProps> = ({
           borderBottomRightRadius={singlePostPageView ? "0" : "4"}
         >
           {/* post info */}
-          <Flex align="center">
-            {!singlePostPageView && (
+          <Flex align="center" wrap="wrap">
+            {(homePage || singlePostPageView) && (
               <>
-                <Image as={FaReddit} size="18" mr="2" />
+                <Image as={FaReddit} boxSize="19px" mr="2" />
 
-                <Text fontSize=".75rem" fontWeight="700">
-                  {post.communityId}
+                <Text
+                  fontSize=".8rem"
+                  fontWeight="600"
+                  cursor="pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/r/${post.communityId}`);
+                  }}
+                >
+                  r/{post.communityId}
                 </Text>
 
                 <Icon as={BsDot} fontSize=".7rem" color="gray.400" />

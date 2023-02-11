@@ -12,7 +12,6 @@ import { User } from "firebase/auth";
 import { addDoc, collection, serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { firestore, storage } from "../../../firebase/clientApp";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import useSelectImage from "../../../hooks/useSelectImage";
 import { uploadImageToStorage } from "../../../api/uploadImageToStorage";
 
