@@ -2,7 +2,7 @@ import { collection, getDocs, limit, orderBy, query, where } from "firebase/fire
 import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Post } from "../atoms/postsAtom";
+import { Post, PostVote } from "../atoms/postsAtom";
 import CreatePostLink from "../components/Communities/CreatePostLink";
 import PageContent from "../components/Layout/PageContent";
 import HomePagePosts from "../components/Posts/Posts/HomePagePosts";
@@ -68,6 +68,27 @@ const HomePage: NextPage = () => {
     setLoading(false);
   };
 
+  const getUsersPostVotes = async () => {
+    setLoading(true);
+    try {
+      // get ids of posts currently displayed
+      const postIds = postStateValue.posts.map((post) => post.id);
+      // get postVotes from db macthing the postIds
+      const voteDocs = await getDocs(
+        query(collection(firestore, `users/${user?.uid}/postVotes`), where("postId", "in", postIds))
+      );
+      const votes = voteDocs.docs.map((vote) => ({ id: vote.id, ...vote.data() }));
+      // Update client side state
+      setPostStateValue((prev) => ({
+        ...prev,
+        postVotes: votes as PostVote[],
+      }));
+    } catch (error) {
+      console.log("getUsersPostVotes error", error);
+    }
+    setLoading(false);
+  };
+
   // Home feed if no user is logged in
   useEffect(() => {
     if (!user && !loadingUser) {
@@ -81,6 +102,21 @@ const HomePage: NextPage = () => {
       buildUserHomeFeed();
     }
   }, [communityStateValue.snippetsFetched, loadingUser]);
+
+  // get users posts votes
+  useEffect(() => {
+    if (user && postStateValue.posts.length !== 0 && postStateValue.postVotes.length === 0) {
+      getUsersPostVotes();
+    }
+
+    // TODO: Uncomment clean up if dublicate postVotes data on ohter pages
+    // return () => {
+    //   setPostStateValue(prev => ({
+    //     ...prev,
+    //     postVotes: []
+    //   }))
+    // }
+  }, [user, postStateValue.posts, postStateValue.postVotes]);
 
   return (
     <PageContent>

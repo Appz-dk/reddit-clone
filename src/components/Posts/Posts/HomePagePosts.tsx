@@ -29,7 +29,7 @@ const HomePagePosts: React.FC<PostsProps> = ({ postStateValue, loading }) => {
               key={post.id}
               post={post}
               onVote={onVote}
-              userIsCreator={false} // REMEMBER TO CHANGE
+              userIsCreator={user?.uid === post.creatorId}
               onSelectPost={onSelectPost}
               onDeletePost={onDeletePost}
               userVoteStatus={
