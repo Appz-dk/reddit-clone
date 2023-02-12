@@ -1,5 +1,6 @@
 import { Alert, AlertIcon, Flex, Icon, Image, Skeleton, Spinner, Text } from "@chakra-ui/react";
 import moment from "moment";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -125,17 +126,17 @@ const PostItem: React.FC<PostItemProps> = ({
                   <Image src={post.communityImageURL} boxSize="19px" mr="2" borderRadius="full" />
                 )}
 
-                <Text
-                  fontSize=".8rem"
-                  fontWeight="600"
-                  cursor="pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    router.push(`/r/${post.communityId}`);
-                  }}
-                >
-                  r/{post.communityId}
-                </Text>
+                <Link href={`r/${post.communityId}`}>
+                  <Text
+                    fontSize=".8rem"
+                    fontWeight="600"
+                    cursor="pointer"
+                    _hover={{ textDecoration: "underline" }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    r/{post.communityId}
+                  </Text>
+                </Link>
 
                 <Icon as={BsDot} fontSize=".7rem" color="gray.400" />
               </>
