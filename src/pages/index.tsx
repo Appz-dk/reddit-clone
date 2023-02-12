@@ -38,19 +38,17 @@ const HomePage: NextPage = () => {
   const buildUserHomeFeed = async () => {
     setLoading(true);
     try {
-      // Check which communities a user follows
-      const snippetsDocs = await getDocs(
-        query(collection(firestore, `users/${user?.uid}/communitySnippets`))
-      );
-      const snippets = snippetsDocs.docs.map((doc) => doc.id);
+      // Get communitySnippet ids for current user
+      const snippetIds = communityStateValue.mySnippets.map((snippet) => snippet.communityId);
+
       // If user is a member of any communities we chose from those
-      if (snippets.length !== 0) {
+      if (snippetIds.length !== 0) {
         // Get top 10 posts from communities in users communitySnippets
         const postDocs = await getDocs(
           query(
             collection(firestore, "posts"),
-            orderBy("createdAt", "desc"),
-            where("communityId", "in", snippets),
+            // orderBy("createdAt", "desc"),
+            where("communityId", "in", snippetIds),
             limit(10)
           )
         );
@@ -79,10 +77,10 @@ const HomePage: NextPage = () => {
 
   // Home feed if user
   useEffect(() => {
-    if (user && !loadingUser) {
+    if (communityStateValue.snippetsFetched && !loadingUser) {
       buildUserHomeFeed();
     }
-  }, [user, loadingUser]);
+  }, [communityStateValue.snippetsFetched, loadingUser]);
 
   return (
     <PageContent>

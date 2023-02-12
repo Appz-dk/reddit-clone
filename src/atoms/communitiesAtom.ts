@@ -26,13 +26,15 @@ export type CommunitySnippet = {
 }
 
 interface CommunityState {
-  mySnippets: CommunitySnippet[]
   currentCommunity?: Community;
+  mySnippets: CommunitySnippet[];
+  snippetsFetched: boolean
 }
 
 // The recoil atom
 const defaultCommunityState: CommunityState = {
-  mySnippets: []
+  mySnippets: [],
+  snippetsFetched: false
 }
 
 export const communityState = atom<CommunityState>({
