@@ -52,8 +52,6 @@ const PostItem: React.FC<PostItemProps> = ({
       if (!success) {
         throw new Error("Failed to delete post");
       }
-
-      console.log("Post was succesfully deleted");
     } catch (error) {
       console.log("handleDeletePost error", error);
     }
@@ -126,7 +124,7 @@ const PostItem: React.FC<PostItemProps> = ({
                   <Image src={post.communityImageURL} boxSize="19px" mr="2" borderRadius="full" />
                 )}
 
-                <Link href={`r/${post.communityId}`}>
+                <Link href={`/r/${post.communityId}`}>
                   <Text
                     fontSize=".8rem"
                     fontWeight="600"

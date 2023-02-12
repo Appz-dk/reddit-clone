@@ -20,6 +20,7 @@ import { User } from "firebase/auth";
 
 import { useCreateCommunity } from "../../../hooks/useCreateCommunity";
 import { CommunityType, isCommunityType } from "../../../atoms/communitiesAtom";
+import { useRouter } from "next/router";
 
 type CreateCommunityModalType = {
   isOpen: boolean;
@@ -28,6 +29,7 @@ type CreateCommunityModalType = {
 };
 
 const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onClose, user }) => {
+  const router = useRouter();
   const [communityName, setCommunityName] = useState("");
   const [communityType, setCommunityType] = useState<CommunityType>("public");
 
@@ -46,7 +48,9 @@ const CreateCommunityModal: React.FC<CreateCommunityModalType> = ({ isOpen, onCl
   };
 
   const handleCreateCommunity = async () => {
-    createCommunity({ communityName, communityType });
+    await createCommunity({ communityName, communityType });
+    onClose();
+    router.push(`/r/${communityName}`);
   };
 
   return (

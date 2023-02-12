@@ -2,7 +2,8 @@ import { useState } from "react"
 import { User } from "firebase/auth"
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
-import { CommunityType } from "../atoms/communitiesAtom";
+import { communityState, CommunityType } from "../atoms/communitiesAtom";
+import { useSetRecoilState } from "recoil";
 
 
 type CreateCommunity = {
@@ -11,13 +12,14 @@ type CreateCommunity = {
 }
 
 type useCreateCommunityHook = {
-  createCommunity: (communityData: CreateCommunity) => void;
+  createCommunity: (communityData: CreateCommunity) => Promise<void>;
   loading: boolean;
   error: string;
 }
 
 
 export const useCreateCommunity = (user?: User | null): useCreateCommunityHook => {
+  const setCommunityStateValue = useSetRecoilState(communityState)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -62,6 +64,14 @@ export const useCreateCommunity = (user?: User | null): useCreateCommunityHook =
           communityId: communityData.communityName,
           isModerator: true,
         });
+        // Update communityState
+        setCommunityStateValue(prev => ({
+          ...prev,
+          mySnippets: [...prev.mySnippets, {
+            communityId: communityData.communityName,
+            isModerator: true,
+          }]
+        }))
       });
     } catch (error: unknown) {
       console.log("handleCreateCommunity error", error);
@@ -74,5 +84,3 @@ export const useCreateCommunity = (user?: User | null): useCreateCommunityHook =
 
   return { createCommunity, loading, error }
 }
-
-// export default useCreateCommunity
