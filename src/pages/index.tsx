@@ -112,9 +112,8 @@ const HomePage: NextPage = () => {
 
   // get users posts votes
   useEffect(() => {
-    if (user && postStateValue.posts.length !== 0 && postStateValue.postVotes.length === 0) {
-      getUsersPostVotes();
-    }
+    if (!user?.uid && !postStateValue.posts.length) return;
+    getUsersPostVotes();
 
     // TODO: Uncomment clean up if dublicate postVotes data on ohter pages
     // return () => {
@@ -123,7 +122,7 @@ const HomePage: NextPage = () => {
     //     postVotes: []
     //   }))
     // }
-  }, [user, postStateValue.posts, postStateValue.postVotes]);
+  }, [user, postStateValue.posts]);
 
   return (
     <PageContent>
