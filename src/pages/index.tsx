@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Post, PostVote } from "../atoms/postsAtom";
 import CreatePostLink from "../components/Communities/CreatePostLink";
+import PersonalHome from "../components/Communities/PersonalHome";
 import Premium from "../components/Communities/Premium";
 import Recommendations from "../components/Communities/Recommendations";
 import PageContent from "../components/Layout/PageContent";
@@ -130,6 +131,7 @@ const HomePage: NextPage = () => {
       <Stack spacing={5}>
         <Recommendations />
         <Premium />
+        <PersonalHome />
       </Stack>
     </PageContent>
   );
