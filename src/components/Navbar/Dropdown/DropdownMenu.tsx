@@ -9,8 +9,7 @@ import useDropdownMenu from "../../../hooks/useDropdownMenu";
 const Community: React.FC = () => {
   const [user] = useAuthState(auth);
   const { dropdownState, toggleMenuOpen, closeMenu } = useDropdownMenu();
-  // Vercel Type error: 'dropdownState' is of type 'unknown'.
-  // const { displayText, icon, iconColor, imageURL } = dropdownState.selectedMenuItem;
+  const { displayText, icon, iconColor, imageURL } = dropdownState.selectedMenuItem;
 
   return (
     <Menu isOpen={dropdownState.isOpen} onClose={closeMenu}>
