@@ -13,7 +13,7 @@ const Community: React.FC = () => {
   // const { displayText, icon, iconColor, imageURL } = dropdownState.selectedMenuItem;
 
   return (
-    <Menu isOpen={dropdownState.isOpen} onClose={closeMenu}>
+    <Menu isOpen={dropdownState.isOpen as boolean} onClose={closeMenu}>
       <MenuButton
         marginInline={1}
         padding="0 4px"
