@@ -21,7 +21,7 @@ const RecommendationsLoader = () => {
   return (
     <Stack bg="white" p="3" borderBottomRadius="4">
       {[1, 2, 3].map((x) => (
-        <Flex gap="2" align="center">
+        <Flex key={x} gap="2" align="center">
           <SkeletonCircle size="5" />
           <SkeletonText noOfLines={1} width="75%" />
         </Flex>
@@ -110,7 +110,12 @@ const Recommendations = () => {
                     <Link href={`/r/${com.id}`} style={{ width: "85%" }}>
                       <Flex align="center" gap="1" _hover={{ textDecor: "underline" }}>
                         {com.imageURL && (
-                          <Image src={com.imageURL} boxSize="5" borderRadius="full" />
+                          <Image
+                            src={com.imageURL}
+                            boxSize="5"
+                            borderRadius="full"
+                            alt="community logo"
+                          />
                         )}
                         {!com.imageURL && <Icon as={FaReddit} boxSize="5" color="brand.100" />}
                         <Text

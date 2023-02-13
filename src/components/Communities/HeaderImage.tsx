@@ -16,7 +16,9 @@ const HeaderImage: React.FC<HeaderImageProps> = ({ imageUrl }) => {
       borderRadius="100%"
       bg="white"
     >
-      {imageUrl && <Image src={imageUrl} boxSize="40px" borderRadius="full" />}
+      {imageUrl && (
+        <Image src={imageUrl} boxSize="40px" borderRadius="full" alt="Logo of the community" />
+      )}
       {!imageUrl && (
         <Icon
           as={FaReddit}
