@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Post, PostVote } from "../atoms/postsAtom";
 import CreatePostLink from "../components/Communities/CreatePostLink";
+import Recommendations from "../components/Communities/Recommendations";
 import PageContent from "../components/Layout/PageContent";
 import HomePagePosts from "../components/Posts/Posts/HomePagePosts";
 import { auth, firestore } from "../firebase/clientApp";
@@ -124,7 +125,9 @@ const HomePage: NextPage = () => {
         <CreatePostLink />
         <HomePagePosts postStateValue={postStateValue} loading={loading} />
       </>
-      <>{/* Recommendations */}</>
+      <>
+        <Recommendations />
+      </>
     </PageContent>
   );
 };

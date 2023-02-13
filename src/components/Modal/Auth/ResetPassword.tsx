@@ -69,7 +69,8 @@ const ResetPassword = () => {
           w="100%"
           marginBlock={2}
           height="36px"
-          type="submit">
+          type="submit"
+        >
           Reset Password
         </Button>
       </form>
@@ -78,14 +79,16 @@ const ResetPassword = () => {
         <Text
           textTransform="uppercase"
           cursor="pointer"
-          onClick={() => setModalAuthState((prev) => ({ ...prev, view: "login" }))}>
+          onClick={() => setModalAuthState((prev) => ({ ...prev, view: "login" }))}
+        >
           Login
         </Text>
         <BsDot />
         <Text
           textTransform="uppercase"
           cursor="pointer"
-          onClick={() => setModalAuthState((prev) => ({ ...prev, view: "signup" }))}>
+          onClick={() => setModalAuthState((prev) => ({ ...prev, view: "signup" }))}
+        >
           Sign up
         </Text>
       </Flex>
