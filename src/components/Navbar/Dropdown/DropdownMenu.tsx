@@ -28,22 +28,10 @@ const Community: React.FC = () => {
           maxWidth="200px"
         >
           <Flex align="center" gap="1">
-            {!dropdownState.selectedMenuItem.imageURL && (
-              <Icon
-                as={dropdownState.selectedMenuItem.icon}
-                boxSize="5"
-                color={dropdownState.selectedMenuItem.iconColor}
-              />
-            )}
-            {dropdownState.selectedMenuItem.imageURL && (
-              <Image
-                src={dropdownState.selectedMenuItem.imageURL}
-                boxSize="5"
-                borderRadius="full"
-              />
-            )}
+            {!imageURL && <Icon as={icon} boxSize="5" color={iconColor} />}
+            {imageURL && <Image src={imageURL} boxSize="5" borderRadius="full" />}
             <Text fontWeight="600" fontSize=".8rem" display={{ base: "none", lg: "unset" }}>
-              {dropdownState.selectedMenuItem.displayText}
+              {displayText}
             </Text>
           </Flex>
           <ChevronDownIcon />

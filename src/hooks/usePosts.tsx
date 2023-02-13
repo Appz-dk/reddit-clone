@@ -53,7 +53,6 @@ export const usePosts = () => {
 
       // no existingVote, so have to create a new one
       if (existingVoteIndex === -1) {
-        console.log("no votes exists", existingVoteIndex);
         const docRef = doc(collection(firestore, "users", `${user?.uid}/postVotes`));
 
         const newVote: PostVote = {
@@ -75,7 +74,6 @@ export const usePosts = () => {
 
         // Removing existing vote (From upvote, to no upvote)
         if (existingVote.voteValue === voteValue) {
-          console.log("Removeing vote", existingVoteIndex);
           voteChange = voteValue * -1;
           // Update db
           batch.delete(docRef);

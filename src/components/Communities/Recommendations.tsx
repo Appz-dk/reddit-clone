@@ -77,7 +77,7 @@ const Recommendations = () => {
         color="white"
         borderTopRadius="4"
         p="7"
-        // bgImage="/images/recCommsArt.png"
+        bgImage="/images/recCommsArt.png"
         bgSize="cover"
         position="relative"
         bgGradient="linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75)), url('images/recCommsArt.png')"
