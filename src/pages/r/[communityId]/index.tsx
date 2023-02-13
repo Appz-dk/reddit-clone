@@ -21,15 +21,15 @@ type CommunityPageProps = {
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData, error }) => {
   const setCommunityStateValue = useSetRecoilState(communityState);
 
-  if (error) return <CommunityError errorMessage={error} />;
-  if (!communityData) return <NotFound />;
-
   useEffect(() => {
     setCommunityStateValue((prev) => ({
       ...prev,
       currentCommunity: communityData,
     }));
   }, [communityData]);
+
+  if (error) return <CommunityError errorMessage={error} />;
+  if (!communityData) return <NotFound />;
 
   return (
     <>

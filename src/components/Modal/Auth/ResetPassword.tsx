@@ -33,8 +33,8 @@ const ResetPassword = () => {
 
       {(!success || error) && (
         <Text fontSize=".8rem" textAlign="center">
-          Enter the email address associated with your Reddit account, and we’ll send you a reset
-          link
+          Enter the email address associated with your Reddit account, and we&apos;ll send you a
+          reset link
         </Text>
       )}
 
