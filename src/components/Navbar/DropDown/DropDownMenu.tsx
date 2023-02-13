@@ -5,7 +5,6 @@ import Communities from "./Communities";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase/clientApp";
 import useDropdownMenu from "../../../hooks/useDropdownMenu";
-import { DropdownMenuItem } from "../../../atoms/dropdownMenuAtom";
 
 const Community: React.FC = () => {
   const [user] = useAuthState(auth);
