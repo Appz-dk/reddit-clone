@@ -28,6 +28,6 @@ export const defaultMenuState: DropdownMenuState = {
 }
 
 export const dropdownMenuState = atom<DropdownMenuState>({
-  key: "dropDownMenuState",
+  key: "dropdownMenuState",
   default: defaultMenuState
 })
