@@ -140,7 +140,7 @@ const Recommendations = () => {
                 </Flex>
               );
             })}
-          <Button size="xs" w="85%" placeSelf="center">
+          <Button size="xs" w="85%" paddingBlock="3.5" placeSelf="center">
             View All
           </Button>
         </Stack>

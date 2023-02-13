@@ -1,9 +1,11 @@
+import { Stack } from "@chakra-ui/react";
 import { collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Post, PostVote } from "../atoms/postsAtom";
 import CreatePostLink from "../components/Communities/CreatePostLink";
+import Premium from "../components/Communities/Premium";
 import Recommendations from "../components/Communities/Recommendations";
 import PageContent from "../components/Layout/PageContent";
 import HomePagePosts from "../components/Posts/Posts/HomePagePosts";
@@ -125,9 +127,10 @@ const HomePage: NextPage = () => {
         <CreatePostLink />
         <HomePagePosts postStateValue={postStateValue} loading={loading} />
       </>
-      <>
+      <Stack spacing={5}>
         <Recommendations />
-      </>
+        <Premium />
+      </Stack>
     </PageContent>
   );
 };
