@@ -5,11 +5,13 @@ import Communities from "./Communities";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase/clientApp";
 import useDropdownMenu from "../../../hooks/useDropdownMenu";
+import { DropdownMenuItem } from "../../../atoms/dropdownMenuAtom";
 
 const Community: React.FC = () => {
   const [user] = useAuthState(auth);
   const { dropdownState, toggleMenuOpen, closeMenu } = useDropdownMenu();
-  const { displayText, icon, iconColor, imageURL } = dropdownState.selectedMenuItem;
+  // Vercel Type error: 'dropdownState' is of type 'unknown'.
+  // const { displayText, icon, iconColor, imageURL } = dropdownState.selectedMenuItem;
 
   return (
     <Menu isOpen={dropdownState.isOpen} onClose={closeMenu}>
@@ -28,10 +30,22 @@ const Community: React.FC = () => {
           maxWidth="200px"
         >
           <Flex align="center" gap="1">
-            {!imageURL && <Icon as={icon} boxSize="5" color={iconColor} />}
-            {imageURL && <Image src={imageURL} boxSize="5" borderRadius="full" />}
+            {!dropdownState.selectedMenuItem.imageURL && (
+              <Icon
+                as={dropdownState.selectedMenuItem.icon}
+                boxSize="5"
+                color={dropdownState.selectedMenuItem.iconColor}
+              />
+            )}
+            {dropdownState.selectedMenuItem.imageURL && (
+              <Image
+                src={dropdownState.selectedMenuItem.imageURL}
+                boxSize="5"
+                borderRadius="full"
+              />
+            )}
             <Text fontWeight="600" fontSize=".8rem" display={{ base: "none", lg: "unset" }}>
-              {displayText}
+              {dropdownState.selectedMenuItem.displayText}
             </Text>
           </Flex>
           <ChevronDownIcon />
