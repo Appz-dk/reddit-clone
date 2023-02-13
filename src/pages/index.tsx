@@ -96,16 +96,19 @@ const HomePage: NextPage = () => {
   // Home feed if no user is logged in
   useEffect(() => {
     if (!user && !loadingUser) {
+      console.log("Calling buildNoUserHomeFeed");
       buildNoUserHomeFeed();
     }
   }, [user, loadingUser]);
 
   // Home feed if user
   useEffect(() => {
-    if (communityStateValue.snippetsFetched && !loadingUser) {
+    if (!communityStateValue.snippetsFetched) return;
+
+    if (user) {
       buildUserHomeFeed();
     }
-  }, [communityStateValue.snippetsFetched, loadingUser]);
+  }, [user, communityStateValue.snippetsFetched]);
 
   // get users posts votes
   useEffect(() => {
