@@ -16,11 +16,16 @@ const PersonalHome = () => {
   };
 
   const handleCreatePostBtn = () => {
+    const offSet = window.scrollY;
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-    toggleMenuOpen();
+
+    // 'Offset / 2' is about the amount of time it takes to get to the top of the page
+    setTimeout(() => {
+      toggleMenuOpen();
+    }, scrollY / 2);
   };
 
   return (
