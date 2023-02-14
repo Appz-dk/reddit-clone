@@ -1,4 +1,4 @@
-import { Flex, Icon, Input } from "@chakra-ui/react";
+import { Button, Flex, Icon, Input } from "@chakra-ui/react";
 import React from "react";
 import { FaReddit } from "react-icons/fa";
 import { AiOutlinePicture } from "react-icons/ai";
@@ -35,6 +35,7 @@ const CreatePostLink = () => {
     <Flex justify="center" align="center" gap="3" bg="white" borderRadius="4" padding="2" mb="5">
       <Icon as={FaReddit} fontSize="2rem" color="gray.300" />
       <Input
+        as={Button}
         flexGrow={1}
         placeholder="Create new post"
         fontSize=".75rem"

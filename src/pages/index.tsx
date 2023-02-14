@@ -77,6 +77,7 @@ const HomePage: NextPage = () => {
     try {
       // get ids of posts currently displayed
       const postIds = postStateValue.posts.map((post) => post.id);
+      if (!postIds.length) return;
       // get postVotes from db macthing the postIds
       const voteDocs = await getDocs(
         query(collection(firestore, `users/${user?.uid}/postVotes`), where("postId", "in", postIds))
@@ -96,7 +97,6 @@ const HomePage: NextPage = () => {
   // Home feed if no user is logged in
   useEffect(() => {
     if (!user && !loadingUser) {
-      console.log("Calling buildNoUserHomeFeed");
       buildNoUserHomeFeed();
     }
   }, [user, loadingUser]);
@@ -112,16 +112,16 @@ const HomePage: NextPage = () => {
 
   // get users posts votes
   useEffect(() => {
-    if (!user?.uid && !postStateValue.posts.length) return;
-    getUsersPostVotes();
-
-    // TODO: Uncomment clean up if dublicate postVotes data on ohter pages
-    // return () => {
-    //   setPostStateValue(prev => ({
-    //     ...prev,
-    //     postVotes: []
-    //   }))
-    // }
+    if (user?.uid && postStateValue.posts.length !== 0) {
+      getUsersPostVotes();
+    }
+    // Clean up to empty postVotes array on component unmount
+    return () => {
+      setPostStateValue((prev) => ({
+        ...prev,
+        postVotes: [],
+      }));
+    };
   }, [user, postStateValue.posts]);
 
   return (
@@ -130,7 +130,7 @@ const HomePage: NextPage = () => {
         <CreatePostLink />
         <HomePagePosts postStateValue={postStateValue} loading={loading} />
       </>
-      <Stack spacing={5}>
+      <Stack spacing={5} position="sticky" top="2">
         <Recommendations />
         <Premium />
         <PersonalHome />
